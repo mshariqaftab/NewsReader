@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.alif.newsreader.R;
 import com.alif.newsreader.adapter.DividerItemDecoration;
 import com.alif.newsreader.adapter.NewsFeedAdapter;
+import com.alif.newsreader.adapter.SimpleSectionedRecyclerViewAdapter;
 import com.alif.newsreader.receiver.NetworkReceiver;
 import com.alif.newsreader.adapter.GoogleFeed;
 import com.alif.newsreader.util.Util;
@@ -92,15 +93,34 @@ public class MainActivity extends AppCompatActivity {
         loading = (ProgressBar) findViewById(R.id.loading);
 
         newsFeedRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        adapter = new NewsFeedAdapter(newsFeedList);
+        adapter = new NewsFeedAdapter(this,newsFeedList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         newsFeedRecyclerView.setLayoutManager(mLayoutManager);
         newsFeedRecyclerView.setItemAnimator(new DefaultItemAnimator());
         newsFeedRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        newsFeedRecyclerView.setAdapter(adapter);
+
+
+        //This is the code to provide a sectioned list
+        List<SimpleSectionedRecyclerViewAdapter.Section> sections = new ArrayList<>();
+
+        //Sections
+        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(0, "Section 1"));
+        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(5, "Section 2"));
+        // sections.add(new SimpleSectionedRecyclerViewAdapter.Section(12,"Section 3"));
+        //sections.add(new SimpleSectionedRecyclerViewAdapter.Section(14,"Section 4"));
+        //sections.add(new SimpleSectionedRecyclerViewAdapter.Section(20,"Section 5"));
+
+        //Add your adapter to the sectionAdapter
+        SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
+        SimpleSectionedRecyclerViewAdapter mSectionedAdapter = new
+                SimpleSectionedRecyclerViewAdapter(this, R.layout.section, R.id.section_text, adapter);
+        mSectionedAdapter.setSections(sections.toArray(dummy));
+
+        //Apply this adapter to the RecyclerView
+        newsFeedRecyclerView.setAdapter(mSectionedAdapter);
+
+        // newsFeedRecyclerView.setAdapter(adapter);
         newsFeedRecyclerView.setVisibility(View.GONE);
-
-
     }
 
     // Refreshes the display if the network connection and the
