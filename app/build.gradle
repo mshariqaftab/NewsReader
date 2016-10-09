@@ -37,5 +37,5 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     testCompile 'junit:junit:4.12'
     compile 'com.amitshekhar.android:jackson-android-networking:0.2.0'
-    compile files('/Volumes/Shariq/android-code-center/NewsReader/libs/java-json.jar')
+    compile files('libs/java-json.jar')
 }
