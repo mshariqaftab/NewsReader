@@ -33,6 +33,8 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar loading;
 
     private WebView errorMsgWebView;
+
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +128,10 @@ public class MainActivity extends AppCompatActivity {
         // The specified network connection is not available. Displays error message in webview.
         errorMsgWebView = (WebView) findViewById(R.id.webview);
         errorMsgWebView.setVisibility(View.GONE);
+
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("118F106CA47E3799F5997AFCAFADEFCF").build();
+        mAdView.loadAd(adRequest);
     }
 
     // Refreshes the display if the network connection and the
@@ -152,10 +160,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (receiver != null) {
             this.unregisterReceiver(receiver);
+        }
+        if (mAdView != null) {
+            mAdView.destroy();
         }
     }
 

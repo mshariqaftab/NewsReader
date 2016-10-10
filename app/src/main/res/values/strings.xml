@@ -31,4 +31,7 @@
     <string name="xml_error">Error parsing XML.</string>
     <string name="title_activity_news_details">NewsDetailsActivity</string>
 
+    <!-- AdMob ad unit IDs -->
+    <string name="banner">ca-app-pub-2096123386949899/3250353961</string>
+
 </resources>
