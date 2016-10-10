@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent">
 
-
-    <ProgressBar android:id="@+id/loading"
+    <ProgressBar
+        android:id="@+id/loading"
         style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="match_parent"
-        android:gravity = "center_vertical|center_horizontal"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_height="wrap_content"/>
+        android:gravity="center_vertical|center_horizontal" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -18,11 +18,9 @@
         android:layout_below="@id/loading"
         android:scrollbars="vertical" />
 
-
-
-    <!--<WebView  xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:id="@+id/webview"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--/>-->
+    <WebView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/webview"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 </FrameLayout>

@@ -18,9 +18,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alif.newsreader.R;
 import com.alif.newsreader.adapter.DividerItemDecoration;
@@ -67,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
 
     private NewsFeedAdapter adapter;
 
-    ProgressBar loading;
+    private ProgressBar loading;
+
+    private WebView errorMsgWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
 
+        // Custom ActionBar
         View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
         mTitleTextView.setText(R.string.app_title);
@@ -90,10 +93,12 @@ public class MainActivity extends AppCompatActivity {
         receiver = new NetworkReceiver();
         this.registerReceiver(receiver, filter);
 
+        // progress bar
         loading = (ProgressBar) findViewById(R.id.loading);
 
+        // RecyclerView to load news feed in listView form
         newsFeedRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        adapter = new NewsFeedAdapter(this,newsFeedList);
+        adapter = new NewsFeedAdapter(this, newsFeedList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         newsFeedRecyclerView.setLayoutManager(mLayoutManager);
         newsFeedRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -103,12 +108,8 @@ public class MainActivity extends AppCompatActivity {
         //This is the code to provide a sectioned list
         List<SimpleSectionedRecyclerViewAdapter.Section> sections = new ArrayList<>();
 
-        //Sections
-        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(0, "Section 1"));
-        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(5, "Section 2"));
-        // sections.add(new SimpleSectionedRecyclerViewAdapter.Section(12,"Section 3"));
-        //sections.add(new SimpleSectionedRecyclerViewAdapter.Section(14,"Section 4"));
-        //sections.add(new SimpleSectionedRecyclerViewAdapter.Section(20,"Section 5"));
+        // News Feed Header
+        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(0, "Technology"));
 
         //Add your adapter to the sectionAdapter
         SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
@@ -118,9 +119,11 @@ public class MainActivity extends AppCompatActivity {
 
         //Apply this adapter to the RecyclerView
         newsFeedRecyclerView.setAdapter(mSectionedAdapter);
-
-        // newsFeedRecyclerView.setAdapter(adapter);
         newsFeedRecyclerView.setVisibility(View.GONE);
+
+        // The specified network connection is not available. Displays error message in webview.
+        errorMsgWebView = (WebView) findViewById(R.id.webview);
+        errorMsgWebView.setVisibility(View.GONE);
     }
 
     // Refreshes the display if the network connection and the
@@ -180,9 +183,8 @@ public class MainActivity extends AppCompatActivity {
     private void loadPage() {
         if (((sPref.equals(ANY)) && (wifiConnected || mobileConnected))
                 || ((sPref.equals(WIFI)) && (wifiConnected))) {
-            Toast.makeText(this, "Async loading call goes here.. ", Toast.LENGTH_SHORT).show();
-            // AsyncTask subclass
-            loadXmlFromNetwork();
+            // call to load google news feed
+            fetchGoogleNewsFeedFromNetwork();
         } else {
             showErrorPage();
         }
@@ -190,12 +192,10 @@ public class MainActivity extends AppCompatActivity {
 
     // Displays an error if the app is unable to load content.
     private void showErrorPage() {
-        setContentView(R.layout.activity_main);
-
-        // The specified network connection is not available. Displays error message.
-       /* WebView myWebView = (WebView) findViewById(R.id.webview);
-        myWebView.loadData(getResources().getString(R.string.connection_error),
-                "text/html", null);*/
+        errorMsgWebView.setVisibility(View.VISIBLE);
+        errorMsgWebView.loadData(getResources().getString(R.string.connection_error),
+                "text/html", null);
+        loading.setVisibility(View.GONE);
     }
 
     // Populates the activity's options menu.
@@ -222,9 +222,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Uploads XML from google.com, parses it, and combines it with
-    // HTML markup. Returns HTML string.
-    private void loadXmlFromNetwork() {
+
+    private void fetchGoogleNewsFeedFromNetwork() {
         AndroidNetworking.get(Util.URL)
                 .setPriority(Priority.LOW)
                 .build()
@@ -232,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            newsFeedList.clear();
                             JSONObject responseObj = XML.toJSONObject(response);
                             JSONObject rssObj = responseObj.getJSONObject("rss");
                             JSONObject channelObj = rssObj.getJSONObject("channel");

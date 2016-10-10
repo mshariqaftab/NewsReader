@@ -3,6 +3,7 @@ package com.alif.newsreader.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +14,20 @@ import com.alif.newsreader.activities.NewsDetailsActivity;
 
 import java.util.List;
 
-
 public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHolder> {
 
-
+    private static final String DEBUG_TAG = NewsFeedAdapter.class.getSimpleName();
     private List<GoogleFeed> newsFeedList;
     private final Context mContext;
 
-
-    public void add(GoogleFeed feedObj,int position) {
-        position = position == -1 ? getItemCount()  : position;
-        newsFeedList.add(position,feedObj);
+    public void add(GoogleFeed feedObj, int position) {
+        position = position == -1 ? getItemCount() : position;
+        newsFeedList.add(position, feedObj);
         notifyItemInserted(position);
     }
 
-    public void remove(int position){
-        if (position < getItemCount()  ) {
+    public void remove(int position) {
+        if (position < getItemCount()) {
             newsFeedList.remove(position);
             notifyItemRemoved(position);
         }
@@ -38,14 +37,15 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
         this.mContext = mContext;
         this.newsFeedList = newsFeedList;
     }
+
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_feed_list_row, parent, false);
 
         return new ViewHolder(view, new ViewHolder.NewsFeedViewHolderClicks() {
             @Override
             public void onFeedRowClick(View caller, int position) {
-                Intent intent =  new Intent(mContext, NewsDetailsActivity.class);
-                intent.putExtra("URL", newsFeedList.get(position).getLink());
+                Intent intent = new Intent(mContext, NewsDetailsActivity.class);
+                intent.putExtra("URL", newsFeedList.get(position - 1).getLink());
                 mContext.startActivity(intent);
             }
         });
@@ -59,10 +59,11 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
 
     @Override
     public int getItemCount() {
+        Log.d(DEBUG_TAG, "" + newsFeedList.size());
         return newsFeedList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView title;
         public NewsFeedViewHolderClicks mListener;
 
@@ -75,10 +76,10 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-                int position = getAdapterPosition();
-                mListener.onFeedRowClick(v, position);
+            int position = getAdapterPosition();
+            Log.d(DEBUG_TAG, "" + position);
+            mListener.onFeedRowClick(v, position);
         }
-
 
         public static interface NewsFeedViewHolderClicks {
             public void onFeedRowClick(View caller, int position);
