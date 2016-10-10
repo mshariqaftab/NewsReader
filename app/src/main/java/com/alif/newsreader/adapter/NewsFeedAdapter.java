@@ -14,7 +14,6 @@ import com.alif.newsreader.activities.NewsDetailsActivity;
 
 import java.util.List;
 
-
 public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHolder> {
 
     private static final String DEBUG_TAG = NewsFeedAdapter.class.getSimpleName();
@@ -81,7 +80,6 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
             Log.d(DEBUG_TAG, "" + position);
             mListener.onFeedRowClick(v, position);
         }
-
 
         public static interface NewsFeedViewHolderClicks {
             public void onFeedRowClick(View caller, int position);
