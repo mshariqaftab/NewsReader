@@ -28,7 +28,7 @@ import com.alif.newsreader.adapter.NewsFeedAdapter;
 import com.alif.newsreader.adapter.SimpleSectionedRecyclerViewAdapter;
 import com.alif.newsreader.receiver.NetworkReceiver;
 import com.alif.newsreader.adapter.GoogleFeed;
-import com.alif.newsreader.util.Util;
+import com.alif.newsreader.util.Constant;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -130,7 +130,8 @@ public class MainActivity extends AppCompatActivity {
         errorMsgWebView.setVisibility(View.GONE);
 
         mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("118F106CA47E3799F5997AFCAFADEFCF").build();
+
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice(Constant.ADS_ID).build();
         mAdView.loadAd(adRequest);
     }
 
@@ -211,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         if (((sPref.equals(ANY)) && (wifiConnected || mobileConnected))
                 || ((sPref.equals(WIFI)) && (wifiConnected))) {
             // call to load google news feed
-            fetchGoogleNewsFeedFromNetwork();
+            fetchGoogleNewsFeed();
         } else {
             showErrorPage();
         }
@@ -250,8 +251,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void fetchGoogleNewsFeedFromNetwork() {
-        AndroidNetworking.get(Util.URL)
+    private void fetchGoogleNewsFeed() {
+        AndroidNetworking.get(Constant.URL)
                 .setPriority(Priority.LOW)
                 .build()
                 .getAsString(new StringRequestListener() {

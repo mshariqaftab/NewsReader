@@ -20,9 +20,9 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
     private List<GoogleFeed> newsFeedList;
     private final Context mContext;
 
-    public void add(GoogleFeed feedObj, int position) {
+    public void add(GoogleFeed googleFeed, int position) {
         position = position == -1 ? getItemCount() : position;
-        newsFeedList.add(position, feedObj);
+        newsFeedList.add(position, googleFeed);
         notifyItemInserted(position);
     }
 
