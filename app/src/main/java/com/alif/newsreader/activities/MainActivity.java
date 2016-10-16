@@ -24,10 +24,10 @@ import android.widget.TextView;
 
 import com.alif.newsreader.R;
 import com.alif.newsreader.adapter.DividerItemDecoration;
+import com.alif.newsreader.adapter.GoogleFeed;
 import com.alif.newsreader.adapter.NewsFeedAdapter;
 import com.alif.newsreader.adapter.SimpleSectionedRecyclerViewAdapter;
 import com.alif.newsreader.receiver.NetworkReceiver;
-import com.alif.newsreader.adapter.GoogleFeed;
 import com.alif.newsreader.util.Constant;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;

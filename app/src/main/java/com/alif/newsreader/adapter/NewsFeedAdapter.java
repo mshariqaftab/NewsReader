@@ -69,7 +69,7 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
 
         public ViewHolder(View view, NewsFeedViewHolderClicks mListener) {
             super(view);
-            title = (TextView) view.findViewById(R.id.newsTitle);
+            title = (TextView) view.findViewById(R.id.news_title);
             this.mListener = mListener;
             view.setOnClickListener(this);
         }
