@@ -4,7 +4,7 @@
         <item>Only when on WI-FI</item>
         <item>On any network</item>
     </string-array>
-    <string-array name="listValues" >
+    <string-array name="listValues">
         <item>1</item>
         <item>2</item>
     </string-array>

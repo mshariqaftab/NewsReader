@@ -124,10 +124,10 @@ public class SimpleSectionedRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 
         Arrays.sort(sections, new Comparator<Section>() {
             @Override
-            public int compare(Section o, Section o1) {
-                return (o.firstPosition == o1.firstPosition)
+            public int compare(Section firstSection, Section secondSection  ) {
+                return (firstSection.firstPosition == secondSection.firstPosition)
                         ? 0
-                        : ((o.firstPosition < o1.firstPosition) ? -1 : 1);
+                        : ((firstSection.firstPosition < secondSection.firstPosition) ? -1 : 1);
             }
         });
 
