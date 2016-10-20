@@ -1,7 +1,11 @@
 package com.alif.newsreader.adapter;
 
 public class GoogleFeed {
-    private String newsCategory, newsTitle, link, description;
+    private String newsCategory;
+    private String newsTitle;
+    private String link;
+    private String description;
+    private String publishDate;
 
     public String getNewsCategory() {
         return newsCategory;
@@ -35,4 +39,11 @@ public class GoogleFeed {
         this.description = description;
     }
 
+    public String getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(String publishDate) {
+        this.publishDate = publishDate;
+    }
 }

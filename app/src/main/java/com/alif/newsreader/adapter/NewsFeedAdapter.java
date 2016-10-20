@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alif.newsreader.R;
 import com.alif.newsreader.activities.NewsDetailsActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -55,6 +57,8 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final GoogleFeed googleFeed = newsFeedList.get(position);
         holder.title.setText(googleFeed.getNewsTitle());
+        holder.pubDate.setText(googleFeed.getPublishDate());
+        Picasso.with(mContext).load(googleFeed.getDescription()).into(holder.newsImage);
     }
 
     @Override
@@ -64,12 +68,15 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final TextView title;
+        public final TextView title, pubDate;
+        public final ImageView newsImage;
         public NewsFeedViewHolderClicks mListener;
 
         public ViewHolder(View view, NewsFeedViewHolderClicks mListener) {
             super(view);
             title = (TextView) view.findViewById(R.id.news_title);
+            newsImage = (ImageView) view.findViewById(R.id.news_image);
+            pubDate = (TextView) view.findViewById(R.id.pub_date);
             this.mListener = mListener;
             view.setOnClickListener(this);
         }
@@ -77,7 +84,6 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            Log.d(DEBUG_TAG, "" + position);
             mListener.onFeedRowClick(v, position);
         }
 
