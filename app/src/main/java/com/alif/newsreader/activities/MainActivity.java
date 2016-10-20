@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
                             //Apply mSectionedAdapter adapter to the RecyclerView
                             newsFeedRecyclerView.setAdapter(mSectionedAdapter);
 
-                            Log.d(DEBUG_TAG, "" + newsFeedList.size());
+                            Log.d(DEBUG_TAG, "MainActivity::fetchGoogleNewsFeed newsFeedList size is:" + newsFeedList.size());
 
                             if (adapter != null) {
                                 adapter.notifyDataSetChanged();
