@@ -29,6 +29,7 @@ import com.alif.newsreader.adapter.NewsFeedAdapter;
 import com.alif.newsreader.adapter.SimpleSectionedRecyclerViewAdapter;
 import com.alif.newsreader.receiver.NetworkReceiver;
 import com.alif.newsreader.util.Constant;
+import com.alif.newsreader.util.GoogleNewsXmlParser;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -36,11 +37,12 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.XML;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView newsFeedRecyclerView;
 
-    private NewsFeedAdapter adapter;
+    private NewsFeedAdapter adapter = null;
 
     private ProgressBar loading;
 
@@ -102,29 +104,11 @@ public class MainActivity extends AppCompatActivity {
 
         // RecyclerView to load news feed in listView form
         newsFeedRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        adapter = new NewsFeedAdapter(this, newsFeedList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         newsFeedRecyclerView.setLayoutManager(mLayoutManager);
         newsFeedRecyclerView.setItemAnimator(new DefaultItemAnimator());
         newsFeedRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-
-        //This is the code to provide a sectioned list
-        List<SimpleSectionedRecyclerViewAdapter.Section> sections = new ArrayList<>();
-
-        // News Feed Header
-        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(0, "Technology"));
-
-        //Add your adapter to the sectionAdapter
-        SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
-        SimpleSectionedRecyclerViewAdapter mSectionedAdapter = new
-                SimpleSectionedRecyclerViewAdapter(this, R.layout.section, R.id.section_text, adapter);
-        mSectionedAdapter.setSections(sections.toArray(dummy));
-
-        //Apply this adapter to the RecyclerView
-        newsFeedRecyclerView.setAdapter(mSectionedAdapter);
         newsFeedRecyclerView.setVisibility(View.GONE);
-
         // The specified network connection is not available. Displays error message in webview.
         errorMsgWebView = (WebView) findViewById(R.id.webview);
         errorMsgWebView.setVisibility(View.GONE);
@@ -250,36 +234,51 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to fetch google news feed asynchronously
+     */
 
     private void fetchGoogleNewsFeed() {
+        final GoogleNewsXmlParser googleNewsXmlParser = new GoogleNewsXmlParser();
         AndroidNetworking.get(Constant.URL)
                 .setPriority(Priority.LOW)
                 .build()
                 .getAsString(new StringRequestListener() {
                     @Override
                     public void onResponse(String response) {
+
                         try {
-                            newsFeedList.clear();
-                            JSONObject responseObj = XML.toJSONObject(response);
-                            JSONObject rssObj = responseObj.getJSONObject("rss");
-                            JSONObject channelObj = rssObj.getJSONObject("channel");
-                            JSONArray detailsArr = channelObj.getJSONArray("item");
-                            for (int i = 0; i < detailsArr.length(); i++) {
-                                JSONObject childJSONObject = detailsArr.getJSONObject(i);
-                                GoogleFeed googleFeed = new GoogleFeed();
-                                googleFeed.setNewsTitle(childJSONObject.getString("title"));
-                                googleFeed.setLink(childJSONObject.getString("link"));
-                                googleFeed.setNewsCategory(childJSONObject.getString("category"));
-                                googleFeed.setDescription(childJSONObject.getString("description"));
-                                newsFeedList.add(googleFeed);
-                                Log.d(DEBUG_TAG, googleFeed.toString());
-                            }
+                            InputStream stream = new ByteArrayInputStream(response.getBytes("UTF-8"));
+
+                            // get list of news feeds
+                            newsFeedList = googleNewsXmlParser.parse(stream);
+
+                            adapter = new NewsFeedAdapter(MainActivity.this, newsFeedList);
+
+                            //This is the code to provide a sectioned list
+                            List<SimpleSectionedRecyclerViewAdapter.Section> sections = new ArrayList<>();
+
+                            // News Feed Header
+                            if (newsFeedList.size() != 0)
+                                sections.add(new SimpleSectionedRecyclerViewAdapter.Section(0, newsFeedList.get(0).getNewsCategory()));
+
+                            //Add your adapter to the sectionAdapter
+                            SimpleSectionedRecyclerViewAdapter.Section[] sectionArr = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
+                            SimpleSectionedRecyclerViewAdapter mSectionedAdapter = new
+                                    SimpleSectionedRecyclerViewAdapter(MainActivity.this, R.layout.section, R.id.section_text, adapter);
+                            mSectionedAdapter.setSections(sections.toArray(sectionArr));
+
+                            //Apply mSectionedAdapter adapter to the RecyclerView
+                            newsFeedRecyclerView.setAdapter(mSectionedAdapter);
+
+                            Log.d(DEBUG_TAG, "MainActivity::fetchGoogleNewsFeed newsFeedList size is:" + newsFeedList.size());
+
                             if (adapter != null) {
                                 adapter.notifyDataSetChanged();
                                 newsFeedRecyclerView.setVisibility(View.VISIBLE);
                                 loading.setVisibility(View.GONE);
                             }
-                        } catch (JSONException e) {
+                        } catch (IOException | XmlPullParserException | ParseException e) {
                             e.printStackTrace();
                         }
                     }
