@@ -26,7 +26,8 @@
     <string name="page_title">Newest Google news tagged \'android\'</string>
     <string name="updated">Last updated:</string>
     <string name="lost_connection">Lost connection.</string>
-    <string name="wifi_connected">Wi-Fi reconnected.</string>
+    <string name="wifi_connected">Wi-Fi connected.</string>
+    <string name="mobile_data_connected">Mobile data network connected.</string>
     <string name="connection_error">Unable to load content. Check your network connection.</string>
     <string name="xml_error">Error parsing XML.</string>
     <string name="title_activity_news_details">NewsDetailsActivity</string>

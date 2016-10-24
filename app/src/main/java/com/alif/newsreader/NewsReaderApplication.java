@@ -3,34 +3,58 @@ package com.alif.newsreader;
 import android.app.Application;
 import android.util.Log;
 
+import com.alif.newsreader.util.NewsReaderCrashLibrary;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.ConnectionQuality;
 import com.androidnetworking.interfaces.ConnectionQualityChangeListener;
 
+import timber.log.Timber;
+
 
 public class NewsReaderApplication extends Application {
-    private static final String TAG = NewsReaderApplication.class.getSimpleName();
     private static NewsReaderApplication appInstance = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
         appInstance = this;
-        //For testing purpose only: network interceptor : enable it only for non-images request checking
-//        Stetho.initializeWithDefaults(getApplicationContext());
-//        OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addNetworkInterceptor(new StethoInterceptor()).addInterceptor(new GzipRequestInterceptor()).build();
-//        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-//                .addInterceptor(new GzipRequestInterceptor())
-//                .build();
-//        AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
+
+        // Added timber configuration on application level
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            Timber.plant(new CrashReportingTree());
+        }
+
         AndroidNetworking.initialize(getApplicationContext());
         AndroidNetworking.enableLogging();
         AndroidNetworking.setConnectionQualityChangeListener(new ConnectionQualityChangeListener() {
             @Override
             public void onChange(ConnectionQuality currentConnectionQuality, int currentBandwidth) {
-                Log.d(TAG, "onChange: currentConnectionQuality : " + currentConnectionQuality + " currentBandwidth : " + currentBandwidth);
+                Timber.d("onChange: currentConnectionQuality : " + currentConnectionQuality + " currentBandwidth : " + currentBandwidth);
             }
         });
+    }
 
+    /**
+     * A tree which logs important information for crash reporting.
+     */
+    private static class CrashReportingTree extends Timber.Tree {
+        @Override
+        protected void log(int priority, String tag, String message, Throwable t) {
+            if (priority == Log.VERBOSE || priority == Log.DEBUG) {
+                return;
+            }
+
+            NewsReaderCrashLibrary.log(priority, tag, message);
+
+            if (t != null) {
+                if (priority == Log.ERROR) {
+                    NewsReaderCrashLibrary.logError(t);
+                } else if (priority == Log.WARN) {
+                    NewsReaderCrashLibrary.logWarning(t);
+                }
+            }
+        }
     }
 }

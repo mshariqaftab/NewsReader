@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,11 +45,12 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class MainActivity extends AppCompatActivity {
 
-    private static final String DEBUG_TAG = MainActivity.class.getSimpleName();
-    public static final String WIFI = "1";
-    public static final String ANY = "2";
+    public static final String WIFI = "Wi-Fi";
+    public static final String ANY = "Any";
 
     // Whether there is a Wi-Fi connection.
     private static boolean wifiConnected = false;
@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AdView mAdView;
 
+    SharedPreferences sharedPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setCustomView(mCustomView);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
+
+        // This static call will reset default values only on the first ever read
+        PreferenceManager.setDefaultValues(getBaseContext(), R.xml.preferences, false);
 
         // Registers BroadcastReceiver to track network connection changes.
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -117,6 +122,12 @@ public class MainActivity extends AppCompatActivity {
 
         AdRequest adRequest = new AdRequest.Builder().addTestDevice(Constant.ADS_ID).build();
         mAdView.loadAd(adRequest);
+
+        // Gets the user's network preference settings
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        Timber.tag(MainActivity.class.getSimpleName());
+        Timber.d("Activity Created");
     }
 
     // Refreshes the display if the network connection and the
@@ -124,15 +135,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
-        // Gets the user's network preference settings
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        updateConnectedFlags();
 
         // Retrieves a string value for the preferences. The second parameter
         // is the default value to use if a preference value is not found.
-        sPref = sharedPrefs.getString("listPref", "1");
-
-        updateConnectedFlags();
+        sPref = sharedPrefs.getString("listPref", "Wi-Fi");
+        Timber.v(sPref);
 
         // Only loads the page if refreshDisplay is true. Otherwise, keeps previous
         // display. For example, if the user has set "Wi-Fi only" in prefs and the
@@ -186,6 +194,15 @@ public class MainActivity extends AppCompatActivity {
             wifiConnected = false;
             mobileConnected = false;
         }
+
+        // Set network preferences in SharedPreferences.
+        SharedPreferences.Editor prefsEditor = sharedPrefs.edit();
+        if (wifiConnected) {
+            prefsEditor.putString("listPref", "Wi-Fi");
+        } else {
+            prefsEditor.putString("listPref", "Any");
+        }
+        prefsEditor.commit();
     }
 
     // Uses AsyncTask subclass to download the XML feed from google.com.
@@ -271,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                             //Apply mSectionedAdapter adapter to the RecyclerView
                             newsFeedRecyclerView.setAdapter(mSectionedAdapter);
 
-                            Log.d(DEBUG_TAG, "MainActivity::fetchGoogleNewsFeed newsFeedList size is:" + newsFeedList.size());
+                            Timber.d("MainActivity::fetchGoogleNewsFeed newsFeedList size is:" + newsFeedList.size());
 
                             if (adapter != null) {
                                 adapter.notifyDataSetChanged();
@@ -285,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(ANError anError) {
-                        Log.d(DEBUG_TAG, "Error: " + anError.toString());
+                        Timber.d("Error: " + anError.toString());
                     }
                 });
     }
