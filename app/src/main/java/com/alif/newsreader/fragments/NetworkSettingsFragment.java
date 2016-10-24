@@ -8,6 +8,8 @@ import android.util.Log;
 import com.alif.newsreader.R;
 import com.alif.newsreader.activities.MainActivity;
 
+import timber.log.Timber;
+
 
 public class NetworkSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -44,7 +46,6 @@ public class NetworkSettingsFragment extends PreferenceFragment implements Share
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // Sets refreshDisplay to true so that when the user returns to the main
         // activity, the display refreshes to reflect the new settings.
-        Log.v(DEBUG_TAG, key);
         MainActivity.refreshDisplay = true;
     }
 }

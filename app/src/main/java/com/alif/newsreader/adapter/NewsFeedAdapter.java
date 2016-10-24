@@ -63,7 +63,6 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        Log.d(DEBUG_TAG, "" + newsFeedList.size());
         return newsFeedList.size();
     }
 

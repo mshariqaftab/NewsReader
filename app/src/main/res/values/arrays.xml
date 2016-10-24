@@ -5,7 +5,7 @@
         <item>On any network</item>
     </string-array>
     <string-array name="listValues">
-        <item>1</item>
-        <item>2</item>
+        <item>Wi-Fi</item>
+        <item>Any</item>
     </string-array>
 </resources>

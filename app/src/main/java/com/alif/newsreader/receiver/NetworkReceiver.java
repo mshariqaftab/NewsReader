@@ -15,7 +15,7 @@ import static com.alif.newsreader.activities.MainActivity.WIFI;
 import static com.alif.newsreader.activities.MainActivity.refreshDisplay;
 import static com.alif.newsreader.activities.MainActivity.sPref;
 
-public class NetworkReceiver  extends BroadcastReceiver {
+public class NetworkReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -37,6 +37,7 @@ public class NetworkReceiver  extends BroadcastReceiver {
             // (which by process of elimination would be mobile), sets refreshDisplay to true.
         } else if (ANY.equals(sPref) && networkInfo != null) {
             refreshDisplay = true;
+            Toast.makeText(context, R.string.mobile_data_connected, Toast.LENGTH_SHORT).show();
 
             // Otherwise, the app can't download content--either because there is no network
             // connection (mobile or Wi-Fi), or because the pref setting is WIFI, and there

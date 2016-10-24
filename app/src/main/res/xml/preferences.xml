@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <ListPreference
+        android:defaultValue="Wi-Fi"
         android:entries="@array/listArray"
         android:entryValues="@array/listValues"
         android:key="@string/key_network_preference"
-        android:defaultValue="Wi-Fi"
-        android:title="@string/title_network_preference"
-        android:summary="@string/summary_network_preference" />
+        android:summary="@string/summary_network_preference"
+        android:title="@string/title_network_preference" />
 
     <CheckBoxPreference
+        android:defaultValue="false"
         android:key="@string/key_checkbox_preference"
         android:summary="@string/summary_checkbox_preference"
-        android:defaultValue="false"
         android:title="@string/title_checkbox_preference" />
 </PreferenceScreen>
