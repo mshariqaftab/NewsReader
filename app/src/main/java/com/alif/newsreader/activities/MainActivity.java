@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean refreshDisplay = true;
 
     // The user's current network preference setting.
-    public static String sPref = null;
+    public static String networkPreference = null;
 
     // The BroadcastReceiver that tracks network connectivity changes.
     private NetworkReceiver receiver = new NetworkReceiver();
@@ -139,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Retrieves a string value for the preferences. The second parameter
         // is the default value to use if a preference value is not found.
-        sPref = sharedPrefs.getString("listPref", "Wi-Fi");
-        Timber.v(sPref);
+        networkPreference = sharedPrefs.getString("listPref", "Wi-Fi");
+        Timber.v(networkPreference);
 
         // Only loads the page if refreshDisplay is true. Otherwise, keeps previous
         // display. For example, if the user has set "Wi-Fi only" in prefs and the
@@ -210,8 +210,8 @@ public class MainActivity extends AppCompatActivity {
     // causing a delay that results in a poor user experience, always perform
     // network operations on a separate thread from the UI.
     private void loadPage() {
-        if (((sPref.equals(ANY)) && (wifiConnected || mobileConnected))
-                || ((sPref.equals(WIFI)) && (wifiConnected))) {
+        if (((networkPreference.equals(ANY)) && (wifiConnected || mobileConnected))
+                || ((networkPreference.equals(WIFI)) && (wifiConnected))) {
             // call to load google news feed
             fetchGoogleNewsFeed();
         } else {

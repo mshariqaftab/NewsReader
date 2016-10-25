@@ -13,7 +13,7 @@ import com.alif.newsreader.R;
 import static com.alif.newsreader.activities.MainActivity.ANY;
 import static com.alif.newsreader.activities.MainActivity.WIFI;
 import static com.alif.newsreader.activities.MainActivity.refreshDisplay;
-import static com.alif.newsreader.activities.MainActivity.sPref;
+import static com.alif.newsreader.activities.MainActivity.networkPreference;
 
 public class NetworkReceiver extends BroadcastReceiver {
 
@@ -26,7 +26,7 @@ public class NetworkReceiver extends BroadcastReceiver {
         // Checks the user prefs and the network connection. Based on the result, decides whether
         // to refresh the display or keep the current display.
         // If the userpref is Wi-Fi only, checks to see if the device has a Wi-Fi connection.
-        if (WIFI.equals(sPref) && networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+        if (WIFI.equals(networkPreference) && networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
             // If device has its Wi-Fi connection, sets refreshDisplay
             // to true. This causes the display to be refreshed when the user
             // returns to the app.
@@ -35,7 +35,7 @@ public class NetworkReceiver extends BroadcastReceiver {
 
             // If the setting is ANY network and there is a network connection
             // (which by process of elimination would be mobile), sets refreshDisplay to true.
-        } else if (ANY.equals(sPref) && networkInfo != null) {
+        } else if (ANY.equals(networkPreference) && networkInfo != null) {
             refreshDisplay = true;
             Toast.makeText(context, R.string.mobile_data_connected, Toast.LENGTH_SHORT).show();
 
