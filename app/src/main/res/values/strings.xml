@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NewsReader</string>
+    <string name="app_name">News Reader</string>
     <string name="app_title">Google News</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
@@ -34,5 +34,14 @@
 
     <!-- AdMob ad unit IDs -->
     <string name="banner">ca-app-pub-2096123386949899/3250353961</string>
+
+    <string name="secondary_nav_drawer_name">News Category</string>
+
+    <string name="nav_item_technology">Technology</string>
+    <string name="nav_item_business">Business</string>
+    <string name="nav_item_sports">Sports</string>
+    <string name="nav_item_health">Health</string>
+    <string name="nav_item_entertainment">Entertainment</string>
+    <string name="nav_item_world">World</string>
 
 </resources>

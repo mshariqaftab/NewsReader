@@ -9,7 +9,7 @@
         android:name=".NewsReaderApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/AppTheme">
+        android:theme="@style/BaseTheme">
 
         <meta-data
             android:name="com.google.android.gms.version"

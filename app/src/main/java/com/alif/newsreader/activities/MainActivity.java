@@ -12,14 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.alif.newsreader.R;
 import com.alif.newsreader.adapter.DividerItemDecoration;
@@ -35,6 +34,16 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.icons.MaterialDrawerFont;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -79,22 +88,70 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPrefs;
 
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
-        LayoutInflater mInflater = LayoutInflater.from(this);
 
-        // Custom ActionBar
-        View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
-        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
-        mTitleTextView.setText(R.string.app_title);
+        //if you want to update the items at a later time it is recommended to keep it in a variable
+        SecondaryDrawerItem item1 = new SecondaryDrawerItem()
+                .withIcon(MaterialDrawerFont.Icon.mdf_person).withIdentifier(1).withName(R.string.nav_item_technology);
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem()
+                .withIcon(FontAwesome.Icon.faw_github).withIdentifier(2).withName(R.string.nav_item_business);
+        SecondaryDrawerItem item3 = new SecondaryDrawerItem()
+                .withIcon(FontAwesome.Icon.faw_apple).withIdentifier(2).withName(R.string.nav_item_entertainment);
+        SecondaryDrawerItem item4 = new SecondaryDrawerItem()
+                .withIcon(FontAwesome.Icon.faw_amazon).withIdentifier(2).withName(R.string.nav_item_sports);
+        SecondaryDrawerItem item5 = new SecondaryDrawerItem()
+                .withIcon(FontAwesome.Icon.faw_yahoo).withIdentifier(2).withName(R.string.nav_item_health);
+        SecondaryDrawerItem item6 = new SecondaryDrawerItem()
+                .withIcon(MaterialDrawerFont.Icon.mdf_expand_more).withIdentifier(2).withName(R.string.nav_item_world);
 
-        getSupportActionBar().setCustomView(mCustomView);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
+
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.news)
+                .withSelectionListEnabledForSingleProfile(false)
+                .withProfileImagesVisible(false)
+                .build();
+
+        // add navigation drawer
+        new DrawerBuilder()
+                .withToolbar(mToolbar)
+                .withFullscreen(true)
+                .withActivity(this)
+                .withTranslucentStatusBar(false)
+                .withActionBarDrawerToggle(false)
+                .withAccountHeader(headerResult)
+                .withActionBarDrawerToggle(true)
+                .withActionBarDrawerToggleAnimated(true)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2,
+                        new DividerDrawerItem(),
+                        item3,
+                        new DividerDrawerItem(),
+                        item4,
+                        new DividerDrawerItem(),
+                        item5,
+                        new DividerDrawerItem(),
+                        item6)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        Timber.d(String.format("%s %d", "Clicked Item: ", position));
+                        return true;
+                    }
+                })
+                .build();
 
         // This static call will reset default values only on the first ever read
         PreferenceManager.setDefaultValues(getBaseContext(), R.xml.preferences, false);
