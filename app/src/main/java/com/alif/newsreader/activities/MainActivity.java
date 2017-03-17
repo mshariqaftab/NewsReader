@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,7 +42,6 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.icons.MaterialDrawerFont;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
 
+    Drawer drawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +115,8 @@ public class MainActivity extends AppCompatActivity {
                 .withIcon(FontAwesome.Icon.faw_yahoo).withIdentifier(2).withName(R.string.nav_item_health);
         SecondaryDrawerItem item6 = new SecondaryDrawerItem()
                 .withIcon(MaterialDrawerFont.Icon.mdf_expand_more).withIdentifier(2).withName(R.string.nav_item_world);
-
+        SecondaryDrawerItem item7 = new SecondaryDrawerItem()
+                .withIcon(MaterialDrawerFont.Icon.mdf_expand_more).withIdentifier(2).withName(R.string.nav_item_science);
 
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -123,15 +126,15 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         // add navigation drawer
-        new DrawerBuilder()
-                .withToolbar(mToolbar)
+        drawer = new DrawerBuilder().
+                withToolbar(mToolbar)
                 .withFullscreen(true)
                 .withActivity(this)
                 .withTranslucentStatusBar(false)
-                .withActionBarDrawerToggle(false)
-                .withAccountHeader(headerResult)
                 .withActionBarDrawerToggle(true)
+                .withAccountHeader(headerResult)
                 .withActionBarDrawerToggleAnimated(true)
+                .withSelectedItem(-1)
                 .addDrawerItems(
                         item1,
                         new DividerDrawerItem(),
@@ -143,15 +146,20 @@ public class MainActivity extends AppCompatActivity {
                         new DividerDrawerItem(),
                         item5,
                         new DividerDrawerItem(),
-                        item6)
+                        item6,
+                        new DividerDrawerItem(),
+                        item7)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         Timber.d(String.format("%s %d", "Clicked Item: ", position));
+                        String newsType = getNewsType(position);
+                        loadPage(newsType);
                         return true;
                     }
                 })
                 .build();
+
 
         // This static call will reset default values only on the first ever read
         PreferenceManager.setDefaultValues(getBaseContext(), R.xml.preferences, false);
@@ -205,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         // you don't want to refresh the display--this would force the display of
         // an error page instead of google.com content.
         if (refreshDisplay) {
-            loadPage();
+            loadPage("");
         }
     }
 
@@ -266,11 +274,14 @@ public class MainActivity extends AppCompatActivity {
     // This avoids UI lock up. To prevent network operations from
     // causing a delay that results in a poor user experience, always perform
     // network operations on a separate thread from the UI.
-    private void loadPage() {
+    private void loadPage(String newsType) {
         if (((networkPreference.equals(ANY)) && (wifiConnected || mobileConnected))
                 || ((networkPreference.equals(WIFI)) && (wifiConnected))) {
             // call to load google news feed
-            fetchGoogleNewsFeed();
+            fetchGoogleNewsFeed(newsType);
+            DrawerLayout drawerLayout = drawer.getDrawerLayout();
+            drawerLayout.closeDrawers();
+            loading.setVisibility(View.VISIBLE);
         } else {
             showErrorPage();
         }
@@ -301,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(settingsActivity);
                 return true;
             case R.id.refresh:
-                loadPage();
+                loadPage("");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -312,9 +323,10 @@ public class MainActivity extends AppCompatActivity {
      * Method to fetch google news feed asynchronously
      */
 
-    private void fetchGoogleNewsFeed() {
+    private void fetchGoogleNewsFeed(String newsType) {
         final GoogleNewsXmlParser googleNewsXmlParser = new GoogleNewsXmlParser();
-        AndroidNetworking.get(Constant.URL)
+        Timber.d(String.format("%s%s", Constant.URL, newsType));
+        AndroidNetworking.get(String.format("%s%s", Constant.URL, newsType))
                 .setPriority(Priority.LOW)
                 .build()
                 .getAsString(new StringRequestListener() {
@@ -363,4 +375,34 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+    private String getNewsType(int position) {
+        String type = "";
+        switch (position) {
+            case 1:
+                type = Constant.NEWS_FEED_TECHNOLOGY;
+                break;
+            case 3:
+                type = Constant.NEWS_FEED_BUSINESS;
+                break;
+            case 5:
+                type = Constant.NEWS_FEED_ENTERTAINMENT;
+                break;
+            case 7:
+                type = Constant.NEWS_FEED_SPORTS;
+                break;
+            case 9:
+                type = Constant.NEWS_FEED_HEALTH;
+                break;
+            case 11:
+                type = Constant.NEWS_FEED_WORLD;
+                break;
+            case 13:
+                type = Constant.NEWS_FEED_SCIENCE;
+                break;
+        }
+        return type;
+    }
+
 }

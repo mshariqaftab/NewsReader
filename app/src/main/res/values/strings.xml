@@ -43,5 +43,6 @@
     <string name="nav_item_health">Health</string>
     <string name="nav_item_entertainment">Entertainment</string>
     <string name="nav_item_world">World</string>
+    <string name="nav_item_science">Science</string>
 
 </resources>
