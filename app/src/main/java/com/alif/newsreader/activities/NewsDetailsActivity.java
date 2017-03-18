@@ -16,18 +16,18 @@ import android.widget.ProgressBar;
 
 import com.alif.newsreader.R;
 
-public class NewsDetailsActivity extends AppCompatActivity {
+public class NewsDetailsActivity extends AppCompatActivity implements
+ShareActionProvider.OnShareTargetSelectedListener{
 
-    private Toolbar mToolbar;
+    private Intent shareIntent=new Intent(Intent.ACTION_SEND);
 
-    private ShareActionProvider mShareActionProvider;
-
+    String URL = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_details);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
@@ -39,7 +39,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         webView.getSettings().setBuiltInZoomControls(true);
 
         if (bundle != null) {
-            String URL = bundle.getString("URL");
+            URL = bundle.getString("URL");
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -56,6 +56,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
             });
             webView.loadUrl(URL);
         }
+
+        shareIntent.setType("text/plain");
     }
 
     // Populates the activity's options menu.
@@ -68,10 +70,10 @@ public class NewsDetailsActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.menu_item_share);
 
         // Fetch and store ShareActionProvider
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
 
-        /** Setting a share intent */
-        mShareActionProvider.setShareIntent(getDefaultShareIntent());
+        mShareActionProvider.setShareIntent(shareIntent);
+        mShareActionProvider.setOnShareTargetSelectedListener(this);
 
         // Return true to display menu
         return true;
@@ -82,6 +84,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_share:
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -92,12 +95,15 @@ public class NewsDetailsActivity extends AppCompatActivity {
      * Returns a share intent
      */
     private Intent getDefaultShareIntent() {
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
-        String shareBody = "Here is the share content body";
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-        return sharingIntent;
+        shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check this");
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, URL);
+        return shareIntent;
     }
 
+    @Override
+    public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
+        /** Setting a share intent */
+        source.setShareIntent(getDefaultShareIntent());
+        return false;
+    }
 }
