@@ -1,4 +1,4 @@
-package com.alif.newsreader.activities;
+package com.ms.newsreader.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,14 +21,14 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
-import com.alif.newsreader.R;
-import com.alif.newsreader.adapter.DividerItemDecoration;
-import com.alif.newsreader.adapter.GoogleFeed;
-import com.alif.newsreader.adapter.NewsFeedAdapter;
-import com.alif.newsreader.adapter.SimpleSectionedRecyclerViewAdapter;
-import com.alif.newsreader.receiver.NetworkReceiver;
-import com.alif.newsreader.util.Constant;
-import com.alif.newsreader.util.GoogleNewsXmlParser;
+import com.ms.newsreader.R;
+import com.ms.newsreader.adapter.DividerItemDecoration;
+import com.ms.newsreader.adapter.GoogleFeed;
+import com.ms.newsreader.adapter.NewsFeedAdapter;
+import com.ms.newsreader.adapter.SimpleSectionedRecyclerViewAdapter;
+import com.ms.newsreader.receiver.NetworkReceiver;
+import com.ms.newsreader.util.Constant;
+import com.ms.newsreader.util.GoogleNewsXmlParser;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAdView = (AdView) findViewById(R.id.adView);
 
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(Constant.ADS_ID).build();
+        AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
         // Gets the user's network preference settings

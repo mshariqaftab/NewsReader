@@ -1,4 +1,4 @@
-package com.alif.newsreader.Interface;
+package com.ms.newsreader.Interface;
 
 import android.view.View;
 

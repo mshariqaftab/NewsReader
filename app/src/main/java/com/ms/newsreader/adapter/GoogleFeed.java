@@ -1,4 +1,4 @@
-package com.alif.newsreader.adapter;
+package com.ms.newsreader.adapter;
 
 public class GoogleFeed {
     private String newsCategory;

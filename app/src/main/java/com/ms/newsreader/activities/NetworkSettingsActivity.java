@@ -1,9 +1,9 @@
-package com.alif.newsreader.activities;
+package com.ms.newsreader.activities;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
-import com.alif.newsreader.fragments.NetworkSettingsFragment;
+import com.ms.newsreader.fragments.NetworkSettingsFragment;
 
 public class NetworkSettingsActivity extends PreferenceActivity {
 

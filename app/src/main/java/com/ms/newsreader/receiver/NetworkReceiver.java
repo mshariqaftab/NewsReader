@@ -1,4 +1,4 @@
-package com.alif.newsreader.receiver;
+package com.ms.newsreader.receiver;
 
 
 import android.content.BroadcastReceiver;
@@ -8,12 +8,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
-import com.alif.newsreader.R;
+import com.ms.newsreader.R;
 
-import static com.alif.newsreader.activities.MainActivity.ANY;
-import static com.alif.newsreader.activities.MainActivity.WIFI;
-import static com.alif.newsreader.activities.MainActivity.refreshDisplay;
-import static com.alif.newsreader.activities.MainActivity.networkPreference;
+import static com.ms.newsreader.activities.MainActivity.ANY;
+import static com.ms.newsreader.activities.MainActivity.WIFI;
+import static com.ms.newsreader.activities.MainActivity.refreshDisplay;
+import static com.ms.newsreader.activities.MainActivity.networkPreference;
 
 public class NetworkReceiver extends BroadcastReceiver {
 

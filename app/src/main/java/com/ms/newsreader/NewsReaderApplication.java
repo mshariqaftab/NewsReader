@@ -1,9 +1,9 @@
-package com.alif.newsreader;
+package com.ms.newsreader;
 
 import android.app.Application;
 import android.util.Log;
 
-import com.alif.newsreader.util.NewsReaderCrashLibrary;
+import com.ms.newsreader.util.NewsReaderCrashLibrary;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.ConnectionQuality;
 import com.androidnetworking.interfaces.ConnectionQualityChangeListener;

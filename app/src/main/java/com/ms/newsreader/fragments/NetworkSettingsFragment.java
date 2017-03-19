@@ -1,14 +1,11 @@
-package com.alif.newsreader.fragments;
+package com.ms.newsreader.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.util.Log;
 
-import com.alif.newsreader.R;
-import com.alif.newsreader.activities.MainActivity;
-
-import timber.log.Timber;
+import com.ms.newsreader.R;
+import com.ms.newsreader.activities.MainActivity;
 
 
 public class NetworkSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {

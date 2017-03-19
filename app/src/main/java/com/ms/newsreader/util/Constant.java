@@ -1,4 +1,4 @@
-package com.alif.newsreader.util;
+package com.ms.newsreader.util;
 
 /**
  * Created by Mohd. Shariq on 13/10/16.

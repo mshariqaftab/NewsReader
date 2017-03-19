@@ -1,4 +1,4 @@
-package com.alif.newsreader.util;
+package com.ms.newsreader.util;
 
 /**
  * Created by Mohd. Shariq on 18/10/16.
@@ -7,7 +7,7 @@ package com.alif.newsreader.util;
 
 import android.util.Xml;
 
-import com.alif.newsreader.adapter.GoogleFeed;
+import com.ms.newsreader.adapter.GoogleFeed;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

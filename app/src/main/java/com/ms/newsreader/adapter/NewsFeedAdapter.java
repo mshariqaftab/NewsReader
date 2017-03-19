@@ -1,4 +1,4 @@
-package com.alif.newsreader.adapter;
+package com.ms.newsreader.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alif.newsreader.R;
-import com.alif.newsreader.activities.NewsDetailsActivity;
+import com.ms.newsreader.R;
+import com.ms.newsreader.activities.NewsDetailsActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

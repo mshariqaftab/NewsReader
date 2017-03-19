@@ -1,4 +1,4 @@
-package com.alif.newsreader.adapter;
+package com.ms.newsreader.adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;

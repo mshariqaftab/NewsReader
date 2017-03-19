@@ -1,4 +1,4 @@
-package com.alif.newsreader.activities;
+package com.ms.newsreader.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,7 +14,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import com.alif.newsreader.R;
+import com.ms.newsreader.R;
 
 public class NewsDetailsActivity extends AppCompatActivity implements
 ShareActionProvider.OnShareTargetSelectedListener{

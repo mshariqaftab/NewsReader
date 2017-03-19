@@ -1,4 +1,4 @@
-package com.alif.newsreader;
+package com.ms.newsreader;
 
 import org.junit.Test;
 

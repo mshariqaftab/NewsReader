@@ -1,4 +1,4 @@
-package com.alif.newsreader;
+package com.ms.newsreader;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.alif.newsreader", appContext.getPackageName());
+        assertEquals("com.ms.newsreader", appContext.getPackageName());
     }
 }
