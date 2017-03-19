@@ -2,6 +2,8 @@
 
 The NewsReader app is under [AGPLv3](https://www.gnu.org/licenses/license-list.html#AGPLv3.0) License terms.
 
+<a href='https://play.google.com/store/apps/details?id=com.ms.newsreader&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="100" height="40" /></a>
+
 Bugs and enhancements can be reported under: https://github.com/mshariq-nerd/NewsReader/issues
 
 # How to compile the App
