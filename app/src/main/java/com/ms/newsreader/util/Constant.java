@@ -15,4 +15,13 @@ public class Constant {
     public static final String NEWS_FEED_WORLD = "w";
     public static final String NEWS_FEED_SCIENCE = "snc";
 
+    // News tab keys
+    public static final String TAB_LATEST_KEY = "latest";
+    public static final String TAB_BUSINESS_KEY = "Business";
+    public static final String TAB_HEALTH_KEY = "Health";
+    public static final String TAB_SPORT_KEY = "Sports";
+    public static final String TAB_WORLD_KEY = "World";
+    public static final String TAB_SCIENCE_KEY = "science";
+    public static final String TAB_ENTERTAINMENT_KEY = "entertainment";
+    public static final String TAB_TECHNOLOGY_KEY = "technology";
 }
