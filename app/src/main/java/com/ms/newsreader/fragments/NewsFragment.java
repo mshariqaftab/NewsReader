@@ -16,6 +16,8 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.ms.newsreader.R;
 import com.ms.newsreader.adapter.DividerItemDecoration;
 import com.ms.newsreader.adapter.GoogleFeed;
@@ -45,6 +47,8 @@ public class NewsFragment extends Fragment {
     private NewsFeedAdapter adapter = null;
     RecyclerView recyclerView;
 
+    private AdView mAdView;
+
     // Whether there is a Wi-Fi connection.
     private static boolean wifiConnected = false;
     // Whether there is a mobile connection.
@@ -69,7 +73,7 @@ public class NewsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView =  inflater.inflate(R.layout.fragment_news,container, false);
+        View rootView = inflater.inflate(R.layout.fragment_news, container, false);
 
         if (rootView != null) {
             recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
@@ -83,6 +87,9 @@ public class NewsFragment extends Fragment {
             // The specified network connection is not available. Displays error message in webview.
             errorMsgWebView = (WebView) rootView.findViewById(R.id.webview);
             errorMsgWebView.setVisibility(View.GONE);
+            mAdView = (AdView) rootView.findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
             String strtext = getArguments().getString("language", "");
             fetchGoogleNewsFeed(strtext);
         }
@@ -107,8 +114,8 @@ public class NewsFragment extends Fragment {
                             adapter = new NewsFeedAdapter(getActivity(), newsFeedList);
                             // News Feed Header
                             if (newsFeedList.size() != 0)
-                            //Apply adapter to the RecyclerView
-                            recyclerView.setAdapter(adapter);
+                                //Apply adapter to the RecyclerView
+                                recyclerView.setAdapter(adapter);
 
                             if (adapter != null) {
                                 adapter.notifyDataSetChanged();
@@ -148,6 +155,5 @@ public class NewsFragment extends Fragment {
                 "text/html", null);
         loading.setVisibility(View.GONE);
     }
-
 
 }

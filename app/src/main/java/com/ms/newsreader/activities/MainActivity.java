@@ -89,9 +89,6 @@ public class MainActivity extends AppCompatActivity {
         receiver = new NetworkReceiver();
         this.registerReceiver(receiver, filter);
 
-        // Initialize Ads
-        initAds();
-
         // Gets the user's network preference settings
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
@@ -219,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new NewsFragment().newInstance(Constant.NEWS_FEED_BUSINESS), Constant.TAB_LATEST_KEY);
+        adapter.addFragment(new NewsFragment().newInstance(Constant.NEWS_FEED_BUSINESS), Constant.TAB_TOP_STORIES_KEY);
         adapter.addFragment(new NewsFragment().newInstance(Constant.NEWS_FEED_BUSINESS), Constant.TAB_BUSINESS_KEY);
         adapter.addFragment(new NewsFragment().newInstance(Constant.NEWS_FEED_SPORTS), Constant.TAB_SPORT_KEY);
         adapter.addFragment(new NewsFragment().newInstance(Constant.NEWS_FEED_WORLD), Constant.TAB_WORLD_KEY);
@@ -268,19 +265,22 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         SecondaryDrawerItem item1 = new SecondaryDrawerItem()
-                .withIcon(MaterialDrawerFont.Icon.mdf_person).withIdentifier(1).withName(R.string.nav_item_technology);
+                .withIcon(MaterialDrawerFont.Icon.mdf_person).withIdentifier(1).withName(R.string.nav_item_top_story);
+
         SecondaryDrawerItem item2 = new SecondaryDrawerItem()
-                .withIcon(FontAwesome.Icon.faw_github).withIdentifier(2).withName(R.string.nav_item_business);
+                .withIcon(MaterialDrawerFont.Icon.mdf_person).withIdentifier(1).withName(R.string.nav_item_business);
         SecondaryDrawerItem item3 = new SecondaryDrawerItem()
-                .withIcon(FontAwesome.Icon.faw_apple).withIdentifier(2).withName(R.string.nav_item_entertainment);
+                .withIcon(FontAwesome.Icon.faw_github).withIdentifier(2).withName(R.string.nav_item_sports);
         SecondaryDrawerItem item4 = new SecondaryDrawerItem()
-                .withIcon(FontAwesome.Icon.faw_amazon).withIdentifier(2).withName(R.string.nav_item_sports);
+                .withIcon(FontAwesome.Icon.faw_apple).withIdentifier(2).withName(R.string.nav_item_world);
         SecondaryDrawerItem item5 = new SecondaryDrawerItem()
-                .withIcon(FontAwesome.Icon.faw_yahoo).withIdentifier(2).withName(R.string.nav_item_health);
+                .withIcon(FontAwesome.Icon.faw_amazon).withIdentifier(2).withName(R.string.nav_item_health);
         SecondaryDrawerItem item6 = new SecondaryDrawerItem()
-                .withIcon(MaterialDrawerFont.Icon.mdf_expand_more).withIdentifier(2).withName(R.string.nav_item_world);
+                .withIcon(FontAwesome.Icon.faw_yahoo).withIdentifier(2).withName(R.string.nav_item_science);
         SecondaryDrawerItem item7 = new SecondaryDrawerItem()
-                .withIcon(MaterialDrawerFont.Icon.mdf_expand_more).withIdentifier(2).withName(R.string.nav_item_science);
+                .withIcon(MaterialDrawerFont.Icon.mdf_expand_more).withIdentifier(2).withName(R.string.nav_item_technology);
+        SecondaryDrawerItem item8 = new SecondaryDrawerItem()
+                .withIcon(MaterialDrawerFont.Icon.mdf_expand_more).withIdentifier(2).withName(R.string.nav_item_entertainment);
 
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -312,12 +312,13 @@ public class MainActivity extends AppCompatActivity {
                         new DividerDrawerItem(),
                         item6,
                         new DividerDrawerItem(),
-                        item7)
+                        item7,
+                        new DividerDrawerItem(),
+                        item8)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        Timber.d(String.format("%s %d", "Clicked Item: ", position));
-                        String newsType = getNewsType(position);
+                        slideTab(position);
                         return true;
                     }
                 })
@@ -325,10 +326,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void initAds() {
-        // Admob ads
-        mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(Constant.ADS_ID).build();
-        mAdView.loadAd(adRequest);
+    private void slideTab(int position) {
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        int i = position - 1;
+        if (i != 0) {
+            i = i / 2;
+        }
+        TabLayout.Tab tab = tabLayout.getTabAt(i);
+        assert tab != null;
+        tab.select();
+        drawer.closeDrawer();
     }
 }

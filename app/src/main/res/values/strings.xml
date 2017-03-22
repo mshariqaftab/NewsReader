@@ -34,6 +34,10 @@
 
     <string name="secondary_nav_drawer_name">News Category</string>
 
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
+
+    <string name="nav_item_top_story">Top Stories</string>
     <string name="nav_item_technology">Technology</string>
     <string name="nav_item_business">Business</string>
     <string name="nav_item_sports">Sports</string>
