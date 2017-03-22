@@ -12,9 +12,6 @@
     <string name="title_checkbox_preference">Show Summaries</string>
     <string name="summary_checkbox_preference">Show a summery for each link</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!--  Menu items -->
     <string name="settings">Settings</string>
     <string name="refresh">Refresh</string>
@@ -33,7 +30,7 @@
     <string name="title_activity_news_details">NewsDetailsActivity</string>
 
     <!-- AdMob ad unit IDs -->
-    <string name="banner">ca-app-pub-2096123386949899/3250353961</string>
+    <string name="banner">YOUR_AD_ID</string>
 
     <string name="secondary_nav_drawer_name">News Category</string>
 
