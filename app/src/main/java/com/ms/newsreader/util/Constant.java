@@ -5,7 +5,7 @@ package com.ms.newsreader.util;
  */
 
 public class Constant {
-    public static final String URL = "https://news.google.com/news?output=rss&num=20&topic=";  // Google feed URL
+    public static final String URL = "https://news.google.com/news?output=rss&num=20&ned=in&hl=en&topic=";  // Google feed URL
     public static final String ADS_ID = "118F106CA47E3799F5997AFCAFADEFCF"; // valid only for debugging, Remove it while releasing the app
     public static final String NEWS_FEED_TECHNOLOGY = "tc";
     public static final String NEWS_FEED_BUSINESS = "b";

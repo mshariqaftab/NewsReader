@@ -45,4 +45,18 @@
     <string name="nav_item_world">World</string>
     <string name="nav_item_science">Science</string>
 
+    <string name="title_list_preference">Change Country</string>
+    <string name="country_list_preference_key">list_preference</string>
+    <string name="default_language">English</string>
+
+    <string-array name="country_array">
+        <item>India</item>
+        <item>USA</item>
+    </string-array>
+
+    <string-array name="locale_key_array">
+        <item>en</item>
+        <item>hi</item>
+    </string-array>
+
 </resources>
