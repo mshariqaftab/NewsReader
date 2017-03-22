@@ -6,23 +6,22 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="com.ms.newsreader.NewsReaderApplication"
+        android:name=".NewsReaderApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:theme="@style/BaseTheme">
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name="com.ms.newsreader.activities.MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.ms.newsreader.activities.NetworkSettingsActivity">
+        <activity android:name=".activities.NetworkSettingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
 
@@ -30,8 +29,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ms.newsreader.activities.NewsDetailsActivity"
-            android:label="@string/title_activity_news_details"/>
+            android:name=".activities.NewsDetailsActivity"
+            android:label="@string/title_activity_news_details" />
+        <activity android:name=".activities.SettingsActivity"></activity>
     </application>
 
 </manifest>

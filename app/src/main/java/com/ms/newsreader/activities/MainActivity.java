@@ -21,14 +21,6 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
-import com.ms.newsreader.R;
-import com.ms.newsreader.adapter.DividerItemDecoration;
-import com.ms.newsreader.adapter.GoogleFeed;
-import com.ms.newsreader.adapter.NewsFeedAdapter;
-import com.ms.newsreader.adapter.SimpleSectionedRecyclerViewAdapter;
-import com.ms.newsreader.receiver.NetworkReceiver;
-import com.ms.newsreader.util.Constant;
-import com.ms.newsreader.util.GoogleNewsXmlParser;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -44,6 +36,14 @@ import com.mikepenz.materialdrawer.icons.MaterialDrawerFont;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.ms.newsreader.R;
+import com.ms.newsreader.adapter.DividerItemDecoration;
+import com.ms.newsreader.adapter.GoogleFeed;
+import com.ms.newsreader.adapter.NewsFeedAdapter;
+import com.ms.newsreader.adapter.SimpleSectionedRecyclerViewAdapter;
+import com.ms.newsreader.receiver.NetworkReceiver;
+import com.ms.newsreader.util.Constant;
+import com.ms.newsreader.util.GoogleNewsXmlParser;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -88,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPrefs;
 
-    private Toolbar mToolbar;
-
     Drawer drawer;
 
     @Override
@@ -97,12 +95,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 
-        //if you want to update the items at a later time it is recommended to keep it in a variable
         SecondaryDrawerItem item1 = new SecondaryDrawerItem()
                 .withIcon(MaterialDrawerFont.Icon.mdf_person).withIdentifier(1).withName(R.string.nav_item_technology);
         SecondaryDrawerItem item2 = new SecondaryDrawerItem()
@@ -183,9 +179,9 @@ public class MainActivity extends AppCompatActivity {
         errorMsgWebView = (WebView) findViewById(R.id.webview);
         errorMsgWebView.setVisibility(View.GONE);
 
+        // Admob ads
         mAdView = (AdView) findViewById(R.id.adView);
-
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice(Constant.ADS_ID).build();
         mAdView.loadAd(adRequest);
 
         // Gets the user's network preference settings
@@ -244,6 +240,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        new MenuInflater(this).inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings){
+          startActivity(new Intent(this, SettingsActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     // Checks the network connection and sets the wifiConnected and mobileConnected
     // variables accordingly.
     private void updateConnectedFlags() {
@@ -270,15 +280,18 @@ public class MainActivity extends AppCompatActivity {
         prefsEditor.commit();
     }
 
-    // Uses AsyncTask subclass to download the XML feed from google.com.
-    // This avoids UI lock up. To prevent network operations from
-    // causing a delay that results in a poor user experience, always perform
-    // network operations on a separate thread from the UI.
+    /**
+     * Method to use for loading RSS feeds
+     *
+     * @param newsType String news category
+     */
     private void loadPage(String newsType) {
         if (((networkPreference.equals(ANY)) && (wifiConnected || mobileConnected))
                 || ((networkPreference.equals(WIFI)) && (wifiConnected))) {
             // call to load google news feed
             fetchGoogleNewsFeed(newsType);
+
+            // close navigation drawer
             DrawerLayout drawerLayout = drawer.getDrawerLayout();
             drawerLayout.closeDrawers();
             loading.setVisibility(View.VISIBLE);
@@ -295,37 +308,14 @@ public class MainActivity extends AppCompatActivity {
         loading.setVisibility(View.GONE);
     }
 
-    // Populates the activity's options menu.
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.network_menu, menu);
-        return true;
-    }
-
-    // Handles the user's menu selection.
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.settings:
-                Intent settingsActivity = new Intent(getBaseContext(), NetworkSettingsActivity.class);
-                startActivity(settingsActivity);
-                return true;
-            case R.id.refresh:
-                loadPage("");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     /**
-     * Method to fetch google news feed asynchronously
+     * Downloading of the XML feed from google.com.
+     * causing a delay that results in a poor user experience, always perform
+     * network operations on a separate thread from the UI.
      */
-
     private void fetchGoogleNewsFeed(String newsType) {
         final GoogleNewsXmlParser googleNewsXmlParser = new GoogleNewsXmlParser();
-        Timber.d(String.format("%s%s", Constant.URL, newsType));
         AndroidNetworking.get(String.format("%s%s", Constant.URL, newsType))
                 .setPriority(Priority.LOW)
                 .build()
@@ -341,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
 
                             adapter = new NewsFeedAdapter(MainActivity.this, newsFeedList);
 
-                            //This is the code to provide a sectioned list
+                            //This is to provide a sectioned list
                             List<SimpleSectionedRecyclerViewAdapter.Section> sections = new ArrayList<>();
 
                             // News Feed Header
@@ -357,8 +347,6 @@ public class MainActivity extends AppCompatActivity {
                             //Apply mSectionedAdapter adapter to the RecyclerView
                             newsFeedRecyclerView.setAdapter(mSectionedAdapter);
 
-                            Timber.d("MainActivity::fetchGoogleNewsFeed newsFeedList size is:" + newsFeedList.size());
-
                             if (adapter != null) {
                                 adapter.notifyDataSetChanged();
                                 newsFeedRecyclerView.setVisibility(View.VISIBLE);
@@ -371,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(ANError anError) {
-                        Timber.d("Error: " + anError.toString());
+                        Timber.d(String.format("%s %s", "Error: ", anError.toString()));
                     }
                 });
     }
