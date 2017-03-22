@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NewsReader</string>
+    <string name="app_name">NewsPlus</string>
     <string name="app_title">Google News</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
