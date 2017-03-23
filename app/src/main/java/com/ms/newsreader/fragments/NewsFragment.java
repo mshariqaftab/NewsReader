@@ -16,8 +16,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.ms.newsreader.R;
 import com.ms.newsreader.adapter.DividerItemDecoration;
 import com.ms.newsreader.adapter.GoogleFeed;
@@ -36,6 +34,9 @@ import java.util.List;
 
 import timber.log.Timber;
 
+import static com.ms.newsreader.util.Constant.ANY;
+import static com.ms.newsreader.util.Constant.WIFI;
+
 /**
  * Created by Mohd. Shariq on 22/03/17.
  */
@@ -47,17 +48,10 @@ public class NewsFragment extends Fragment {
     private NewsFeedAdapter adapter = null;
     RecyclerView recyclerView;
 
-    // Whether there is a Wi-Fi connection.
-    private static boolean wifiConnected = false;
-    // Whether there is a mobile connection.
-    private static boolean mobileConnected = false;
-    // Whether the display should be refreshed.
-    public static boolean refreshDisplay = true;
-
     public static NewsFragment newInstance(String language) {
         NewsFragment newsFragment = new NewsFragment();
         Bundle args = new Bundle();
-        args.putString("language", language);
+        args.putString(Constant.FEED_TYPE_KEY, language);
         newsFragment.setArguments(args);
         return newsFragment;
     }
@@ -82,11 +76,14 @@ public class NewsFragment extends Fragment {
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.addItemDecoration(new DividerItemDecoration(rootView.getContext(), LinearLayoutManager.VERTICAL));
             recyclerView.setVisibility(View.GONE);
+
             // The specified network connection is not available. Displays error message in webview.
             errorMsgWebView = (WebView) rootView.findViewById(R.id.webview);
             errorMsgWebView.setVisibility(View.GONE);
-            String strtext = getArguments().getString("language", "");
-            fetchGoogleNewsFeed(strtext);
+            String type = getArguments().getString(Constant.FEED_TYPE_KEY, "");
+
+            // load data
+            loadPage(type);
         }
         return rootView;
     }
@@ -129,19 +126,23 @@ public class NewsFragment extends Fragment {
                 });
     }
 
+    /**
+     * Method to load RSS feeds on success else
+     * show error
+     * @param newsType String news feed type
+     */
+    private void loadPage(String newsType) {
+        if (((Constant.NETWORK_PREFERENCE.equals(ANY)) && (Constant.WIFI_CONNECTED || Constant.MOBILE_CONNECTED))
+                || ((Constant.NETWORK_PREFERENCE.equals(WIFI)) && (Constant.WIFI_CONNECTED))) {
+            // call to load google news feed
+            fetchGoogleNewsFeed(newsType);
 
-//    private void loadPage(String newsType) {
-//        if (((networkPreference.equals(ANY)) && (wifiConnected || mobileConnected))
-//                || ((networkPreference.equals(WIFI)) && (wifiConnected))) {
-//            // call to load google news feed
-//            fetchGoogleNewsFeed(newsType);
-//
-//            // close navigation drawer
-//            loading.setVisibility(View.VISIBLE);
-//        } else {
-//            showErrorPage();
-//        }
-//    }
+            // close navigation drawer
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            showErrorPage();
+        }
+    }
 
     // Displays an error if the app is unable to load content.
     private void showErrorPage() {
@@ -150,5 +151,4 @@ public class NewsFragment extends Fragment {
                 "text/html", null);
         loading.setVisibility(View.GONE);
     }
-
 }

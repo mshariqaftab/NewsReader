@@ -25,4 +25,22 @@ public class Constant {
     public static final String TAB_SCIENCE_KEY = "science";
     public static final String TAB_ENTERTAINMENT_KEY = "entertainment";
     public static final String TAB_TECHNOLOGY_KEY = "technology";
+
+    public static final String WIFI = "Wi-Fi";
+    public static final String ANY = "Any";
+    public static final String LIST_PREF = "listPref";
+    public static final String FEED_TYPE_KEY = "type";
+
+    // Whether there is a Wi-Fi connection.
+    public static boolean WIFI_CONNECTED = false;
+
+    // Whether there is a mobile connection.
+    public static boolean MOBILE_CONNECTED = false;
+
+    // Whether the display should be refreshed.
+    public static boolean REFRESH_DISPLAY = true;
+
+    // The user's current network preference setting.
+    public static String NETWORK_PREFERENCE = null;
+
 }
