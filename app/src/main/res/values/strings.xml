@@ -31,6 +31,7 @@
 
     <!-- AdMob ad unit IDs -->
     <string name="banner">YOUR_AD_ID</string>
+    <string name="interstitial_full_screen">YOUR_INTERSTITIAL_AD_ID</string>
 
     <string name="secondary_nav_drawer_name">News Category</string>
 

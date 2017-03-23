@@ -47,8 +47,6 @@ public class NewsFragment extends Fragment {
     private NewsFeedAdapter adapter = null;
     RecyclerView recyclerView;
 
-    private AdView mAdView;
-
     // Whether there is a Wi-Fi connection.
     private static boolean wifiConnected = false;
     // Whether there is a mobile connection.
@@ -87,9 +85,6 @@ public class NewsFragment extends Fragment {
             // The specified network connection is not available. Displays error message in webview.
             errorMsgWebView = (WebView) rootView.findViewById(R.id.webview);
             errorMsgWebView.setVisibility(View.GONE);
-            mAdView = (AdView) rootView.findViewById(R.id.adView);
-            AdRequest adRequest = new AdRequest.Builder().addTestDevice(Constant.ADS_ID).build();
-            mAdView.loadAd(adRequest);
             String strtext = getArguments().getString("language", "");
             fetchGoogleNewsFeed(strtext);
         }
