@@ -3,6 +3,7 @@ package com.ms.newsreader.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,14 +38,14 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
         this.newsFeedList = newsFeedList;
     }
 
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_feed_list_row, parent, false);
 
         return new ViewHolder(view, new ViewHolder.NewsFeedViewHolderClicks() {
             @Override
             public void onFeedRowClick(View caller, int position) {
                 Intent intent = new Intent(mContext, NewsDetailsActivity.class);
-                intent.putExtra("URL", newsFeedList.get(position - 1).getLink());
+                intent.putExtra("URL", newsFeedList.get(position).getLink());
                 mContext.startActivity(intent);
             }
         });
