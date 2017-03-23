@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
 import com.ms.newsreader.R;
-import com.ms.newsreader.activities.MainActivity;
+import com.ms.newsreader.util.Constant;
 
 
 public class NetworkSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -43,6 +43,6 @@ public class NetworkSettingsFragment extends PreferenceFragment implements Share
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // Sets refreshDisplay to true so that when the user returns to the main
         // activity, the display refreshes to reflect the new settings.
-        MainActivity.refreshDisplay = true;
+        Constant.REFRESH_DISPLAY = true;
     }
 }

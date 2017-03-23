@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,19 +46,6 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String WIFI = "Wi-Fi";
-    public static final String ANY = "Any";
-
-    // Whether there is a Wi-Fi connection.
-    private static boolean wifiConnected = false;
-    // Whether there is a mobile connection.
-    private static boolean mobileConnected = false;
-    // Whether the display should be refreshed.
-    public static boolean refreshDisplay = true;
-
-    // The user's current network preference setting.
-    public static String networkPreference = null;
-
     // The BroadcastReceiver that tracks network connectivity changes.
     private NetworkReceiver receiver = new NetworkReceiver();
 
@@ -67,16 +55,16 @@ public class MainActivity extends AppCompatActivity {
 
     Drawer drawer;
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-
     InterstitialAd mInterstitialAd;
+
+    ViewPager viewPager;
+
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         // Load Ads
         initAds();
@@ -100,6 +88,17 @@ public class MainActivity extends AppCompatActivity {
         // Gets the user's network preference settings
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                int position = tab.getPosition();
+                position = (position * 2 + 1);
+                drawer.setSelectionAtPosition(position);
+            }
+        });
+
+
         Timber.tag(MainActivity.class.getSimpleName());
         Timber.d("Activity Created");
     }
@@ -109,21 +108,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
+        // Method call to check connected network
         updateConnectedFlags();
 
         // Retrieves a string value for the preferences. The second parameter
         // is the default value to use if a preference value is not found.
-        networkPreference = sharedPrefs.getString("listPref", "Wi-Fi");
-        Timber.v(networkPreference);
-
-        // Only loads the page if refreshDisplay is true. Otherwise, keeps previous
-        // display. For example, if the user has set "Wi-Fi only" in prefs and the
-        // device loses its Wi-Fi connection midway through the user using the app,
-        // you don't want to refresh the display--this would force the display of
-        // an error page instead of google.com content.
-        if (refreshDisplay) {
-            //loadPage("");
-        }
+        Constant.NETWORK_PREFERENCE = sharedPrefs.getString(Constant.LIST_PREF, Constant.WIFI);
+        Timber.v(Constant.NETWORK_PREFERENCE);
     }
 
     @Override
@@ -176,51 +168,25 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo activeInfo = connMgr.getActiveNetworkInfo();
 
         if (activeInfo != null && activeInfo.isConnected()) {
-            wifiConnected = activeInfo.getType() == ConnectivityManager.TYPE_WIFI;
-            mobileConnected = activeInfo.getType() == ConnectivityManager.TYPE_MOBILE;
+            Constant.WIFI_CONNECTED = activeInfo.getType() == ConnectivityManager.TYPE_WIFI;
+            Constant.MOBILE_CONNECTED = activeInfo.getType() == ConnectivityManager.TYPE_MOBILE;
         } else {
-            wifiConnected = false;
-            mobileConnected = false;
+            Constant.WIFI_CONNECTED = false;
+            Constant.MOBILE_CONNECTED = false;
         }
 
         // Set network preferences in SharedPreferences.
         SharedPreferences.Editor prefsEditor = sharedPrefs.edit();
-        if (wifiConnected) {
-            prefsEditor.putString("listPref", "Wi-Fi");
+        if (Constant.WIFI_CONNECTED) {
+            prefsEditor.putString(Constant.LIST_PREF, Constant.WIFI);
         } else {
-            prefsEditor.putString("listPref", "Any");
+            prefsEditor.putString(Constant.LIST_PREF, Constant.ANY);
         }
         prefsEditor.apply();
     }
 
-    private String getNewsType(int position) {
-        String type = "";
-        switch (position) {
-            case 1:
-                type = Constant.NEWS_FEED_TECHNOLOGY;
-                break;
-            case 3:
-                type = Constant.NEWS_FEED_BUSINESS;
-                break;
-            case 5:
-                type = Constant.NEWS_FEED_ENTERTAINMENT;
-                break;
-            case 7:
-                type = Constant.NEWS_FEED_SPORTS;
-                break;
-            case 9:
-                type = Constant.NEWS_FEED_HEALTH;
-                break;
-            case 11:
-                type = Constant.NEWS_FEED_WORLD;
-                break;
-            case 13:
-                type = Constant.NEWS_FEED_SCIENCE;
-                break;
-        }
-        return type;
-    }
 
+    // To add news fragments to ViewPager
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -236,11 +202,12 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -254,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
@@ -265,16 +232,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    // Used to create navigation drawer
     private void initNavigationDrawer() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        // Add different navigation drawer items
         SecondaryDrawerItem item1 = new SecondaryDrawerItem()
                 .withIcon(MaterialDrawerFont.Icon.mdf_person).withIdentifier(1).withName(R.string.nav_item_top_story);
-
         SecondaryDrawerItem item2 = new SecondaryDrawerItem()
                 .withIcon(MaterialDrawerFont.Icon.mdf_person).withIdentifier(1).withName(R.string.nav_item_business);
         SecondaryDrawerItem item3 = new SecondaryDrawerItem()
@@ -290,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
         SecondaryDrawerItem item8 = new SecondaryDrawerItem()
                 .withIcon(MaterialDrawerFont.Icon.mdf_expand_more).withIdentifier(2).withName(R.string.nav_item_entertainment);
 
+        // Add navigation drawer header
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.news)
@@ -306,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
                 .withActionBarDrawerToggle(true)
                 .withAccountHeader(headerResult)
                 .withActionBarDrawerToggleAnimated(true)
-                .withSelectedItem(-1)
+                .withSelectedItem(0)
                 .addDrawerItems(
                         item1,
                         new DividerDrawerItem(),
@@ -334,8 +302,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * This method is used to slide tab view to screen
+     * when a particular item clicked inside navigation drawer
+     *
+     * @param position Int value
+     */
     private void slideTab(int position) {
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         int i = position - 1;
         if (i != 0) {
             i = i / 2;
@@ -346,7 +319,9 @@ public class MainActivity extends AppCompatActivity {
         drawer.closeDrawer();
     }
 
-    private void initAds(){
+
+    // To load Ads
+    private void initAds() {
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.interstitial_full_screen));
         AdRequest adRequest = new AdRequest.Builder().
@@ -360,15 +335,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mAdView = (AdView)findViewById(R.id.adView);
+        // Banner Ads
+        mAdView = (AdView) findViewById(R.id.adView);
         AdRequest bannerAdRequest = new AdRequest.Builder().addTestDevice(Constant.ADS_ID).build();
         mAdView.loadAd(bannerAdRequest);
     }
 
+    // load interstitial ads
     private void showInterstitial() {
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         }
     }
-
 }
