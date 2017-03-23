@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "600316437117",
+    "firebase_url": "https://newsreader-9481d.firebaseio.com",
+    "project_id": "newsreader-9481d",
+    "storage_bucket": "newsreader-9481d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600316437117:android:9ac3d2db918a1075",
+        "android_client_info": {
+          "package_name": "com.ms.newsreader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600316437117-r70dm2pa2ebo46dkfdjjfsu4kuk9vsh3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ms.newsreader",
+            "certificate_hash": "3feb03721bba7f8b6bdc20859c0c3d3f71e23846"
+          }
+        },
+        {
+          "client_id": "600316437117-1b4ue1rqb0mou80rcrok33a8dln2jcfd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCl1ufyv0JF7nrGRd5Ng4WICmRTm46ZBco"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "600316437117-1b4ue1rqb0mou80rcrok33a8dln2jcfd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
