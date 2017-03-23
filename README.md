@@ -1,6 +1,9 @@
-# Google News Reader - Android App
+# NewsPlus:  Google News Reader - Android App
 
-The NewsReader app is under [AGPLv3](https://www.gnu.org/licenses/license-list.html#AGPLv3.0) License terms.
+NewsPlus is a simple yet elegant app for reading google news RSS feeds. By Using this app user can read different flavour of news on the go like Top Stories, Technologies, Business, Sports etc. 
+Also user can share the news link on different platforms.
+
+NewsPlus app is under [AGPLv3](https://www.gnu.org/licenses/license-list.html#AGPLv3.0) License terms.
 
 <a href='https://play.google.com/store/apps/details?id=com.ms.newsreader&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="100" height="40" /></a>
 
