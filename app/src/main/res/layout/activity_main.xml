@@ -26,6 +26,7 @@
                 ads:tabTextColor="@color/md_white_1000"
                 android:background="@color/md_black_1000"
                 ads:tabSelectedTextColor="@color/colorPrimary"
+                ads:tabIndicatorColor="@color/colorPrimary"
                 app:tabMode="scrollable"
                 app:tabGravity="fill"/>
         </LinearLayout>
