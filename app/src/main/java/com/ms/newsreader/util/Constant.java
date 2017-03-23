@@ -14,6 +14,7 @@ public class Constant {
     public static final String NEWS_FEED_HEALTH = "m";
     public static final String NEWS_FEED_WORLD = "w";
     public static final String NEWS_FEED_SCIENCE = "snc";
+    public static final String NEWS_FEED_TOP_STORIES = "";
 
     // News tab keys
     public static final String TAB_TOP_STORIES_KEY = "Top Stories";

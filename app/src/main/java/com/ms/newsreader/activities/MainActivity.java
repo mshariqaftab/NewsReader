@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new NewsFragment().newInstance(Constant.NEWS_FEED_BUSINESS), Constant.TAB_TOP_STORIES_KEY);
+        adapter.addFragment(new NewsFragment().newInstance(Constant.NEWS_FEED_TOP_STORIES), Constant.TAB_TOP_STORIES_KEY);
         adapter.addFragment(new NewsFragment().newInstance(Constant.NEWS_FEED_BUSINESS), Constant.TAB_BUSINESS_KEY);
         adapter.addFragment(new NewsFragment().newInstance(Constant.NEWS_FEED_SPORTS), Constant.TAB_SPORT_KEY);
         adapter.addFragment(new NewsFragment().newInstance(Constant.NEWS_FEED_WORLD), Constant.TAB_WORLD_KEY);

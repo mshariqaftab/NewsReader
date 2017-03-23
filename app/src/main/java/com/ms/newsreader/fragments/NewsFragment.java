@@ -88,7 +88,7 @@ public class NewsFragment extends Fragment {
             errorMsgWebView = (WebView) rootView.findViewById(R.id.webview);
             errorMsgWebView.setVisibility(View.GONE);
             mAdView = (AdView) rootView.findViewById(R.id.adView);
-            AdRequest adRequest = new AdRequest.Builder().build();
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice(Constant.ADS_ID).build();
             mAdView.loadAd(adRequest);
             String strtext = getArguments().getString("language", "");
             fetchGoogleNewsFeed(strtext);
