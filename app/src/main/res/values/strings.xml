@@ -31,6 +31,7 @@
 
     <!-- AdMob ad unit IDs -->
     <string name="banner">YOUR_AD_ID</string>
+    <string name="interstitial_full_screen">ca-app-pub-2096123386949899/2728519562</string>
 
     <string name="secondary_nav_drawer_name">News Category</string>
 

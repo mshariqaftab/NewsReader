@@ -43,7 +43,7 @@ dependencies {
     compile 'com.android.support:design:25.3.0'
     compile 'com.amitshekhar.android:jackson-android-networking:0.2.0'
     compile 'ch.acra:acra:4.9.0'
-    compile 'com.google.android.gms:play-services-ads:10.2.0'
+    compile 'com.google.android.gms:play-services-ads:10.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton.timber:timber:4.3.1'
     compile 'com.mikepenz:iconics-core:2.8.2@aar'
