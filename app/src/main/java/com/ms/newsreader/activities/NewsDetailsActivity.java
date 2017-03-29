@@ -40,7 +40,7 @@ ShareActionProvider.OnShareTargetSelectedListener{
         webView.getSettings().setBuiltInZoomControls(true);
 
         if (bundle != null) {
-            URL = bundle.getString("URL");
+            URL = bundle.getString("BASE_URL");
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
