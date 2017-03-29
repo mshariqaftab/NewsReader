@@ -45,7 +45,7 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
             @Override
             public void onFeedRowClick(View caller, int position) {
                 Intent intent = new Intent(mContext, NewsDetailsActivity.class);
-                intent.putExtra("URL", newsFeedList.get(position).getLink());
+                intent.putExtra("BASE_URL", newsFeedList.get(position).getLink());
                 mContext.startActivity(intent);
             }
         });

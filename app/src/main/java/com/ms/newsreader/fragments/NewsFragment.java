@@ -28,6 +28,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,9 +89,10 @@ public class NewsFragment extends Fragment {
         return rootView;
     }
 
-    private void fetchGoogleNewsFeed(String newsType) {
+    private void fetchGoogleNewsFeed(String newsTopic) {
         final GoogleNewsXmlParser googleNewsXmlParser = new GoogleNewsXmlParser();
-        AndroidNetworking.get(String.format("%s%s", Constant.URL, newsType))
+        URL newsRequestURL = Constant.buildUrlWithTopic(newsTopic);
+        AndroidNetworking.get(newsRequestURL.toString())
                 .setPriority(Priority.LOW)
                 .build()
                 .getAsString(new StringRequestListener() {
