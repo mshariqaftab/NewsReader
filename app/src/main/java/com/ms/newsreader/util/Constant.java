@@ -36,7 +36,9 @@ public class Constant {
     /* The num parameter allows us to get fix number of news */
     private static final String NUMBER_PARAM = "num";
 
-
+    /* News preferences key */
+    public static final String NEWS_SOURCE_COUNTRY = "country";
+    public static final String NEWS_SOURCE_LANGUAGE = "language";
 
     /* Types of news we want our API to return */
     public static final String NEWS_FEED_TECHNOLOGY = "tc";
@@ -61,7 +63,7 @@ public class Constant {
     public static final String WIFI = "Wi-Fi";
     public static final String ANY = "Any";
     public static final String LIST_PREF = "listPref";
-    public static final String FEED_TYPE_KEY = "type";
+    public static final String FEED_TOPIC_KEY = "type";
 
     // Whether there is a Wi-Fi connection.
     public static boolean WIFI_CONNECTED = false;
@@ -75,14 +77,12 @@ public class Constant {
     // The user's current network preference setting.
     public static String NETWORK_PREFERENCE = null;
 
-
-
-    public static URL buildUrlWithTopic(String newsTopic) {
+    public static URL buildUrlWithTopic(String newsTopic, String newsSourceCountry, String newsLanguage) {
         Uri newsQueryUri = Uri.parse(BASE_URL).buildUpon()
                 .appendQueryParameter(OUTPUT_PARAM, output_type)
                 .appendQueryParameter(NUMBER_PARAM, Integer.toString(numberOfNews))
-                .appendQueryParameter(COUNTRY_PARAM, "in")
-                .appendQueryParameter(LANGUAGE_PARAM, "en")
+                .appendQueryParameter(COUNTRY_PARAM, newsSourceCountry)
+                .appendQueryParameter(LANGUAGE_PARAM, newsLanguage)
                 .appendQueryParameter(TOPIC_PARAM, newsTopic)
                 .build();
         try {

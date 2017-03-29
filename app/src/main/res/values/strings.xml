@@ -47,18 +47,33 @@
     <string name="nav_item_world">World</string>
     <string name="nav_item_science">Science</string>
 
-    <string name="title_list_preference">Change Country</string>
-    <string name="country_list_preference_key">list_preference</string>
-    <string name="default_language">English</string>
+    <string name="title_country_preference">Chose Country</string>
+    <string name="country_list_preference_key">country_preference</string>
+    <string name="default_country">India</string>
 
     <string-array name="country_array">
         <item>India</item>
-        <item>USA</item>
+        <item>U.S.</item>
+        <item>Australia</item>
     </string-array>
 
-    <string-array name="locale_key_array">
-        <item>en</item>
+    <string-array name="country_key_array">
+        <item>in</item>
+        <item>us</item>
+        <item>au</item>
+    </string-array>
+
+    <string name="title_language_preference">Chose Language</string>
+    <string name="language_list_preference_key">language_preference</string>
+    <string name="default_language">English</string>
+    <string-array name="language_array">
+        <item>Hindi</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="language_key_array">
         <item>hi</item>
+        <item>en</item>
     </string-array>
 
 </resources>

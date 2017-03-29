@@ -1,12 +1,14 @@
 package com.ms.newsreader;
 
 import android.app.Application;
+import android.content.ContextWrapper;
 import android.util.Log;
 
 import com.ms.newsreader.util.NewsReaderCrashLibrary;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.ConnectionQuality;
 import com.androidnetworking.interfaces.ConnectionQualityChangeListener;
+import com.ms.newsreader.util.Preferences;
 
 import timber.log.Timber;
 
@@ -34,6 +36,13 @@ public class NewsReaderApplication extends Application {
                 Timber.d("onChange: currentConnectionQuality : " + currentConnectionQuality + " currentBandwidth : " + currentBandwidth);
             }
         });
+
+        // Initialize the Prefs class
+        new Preferences.Builder().setContext(this)
+                .setMode(ContextWrapper.MODE_PRIVATE)
+                .setPrefsName(getPackageName())
+                .setUseDefaultSharedPreference(true)
+                .build();
     }
 
     /**

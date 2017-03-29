@@ -32,7 +32,8 @@
             android:name=".activities.NewsDetailsActivity"
             android:label="@string/title_activity_news_details"
             android:parentActivityName=".activities.MainActivity"/>
-        <activity android:name=".activities.SettingsActivity"></activity>
+        <activity android:name=".activities.SettingsActivity"
+            android:parentActivityName=".activities.MainActivity"/>
     </application>
 
 </manifest>
