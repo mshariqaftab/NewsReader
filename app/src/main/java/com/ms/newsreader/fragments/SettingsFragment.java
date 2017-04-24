@@ -9,6 +9,8 @@ import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 
 import com.ms.newsreader.R;
+import com.ms.newsreader.util.Constant;
+import com.ms.newsreader.util.Preferences;
 
 /**
  * Created by Mohd. Shariq on 21/03/17.
@@ -17,7 +19,7 @@ import com.ms.newsreader.R;
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = SettingsFragment.class.getSimpleName();
     SharedPreferences sharedPreferences;
-    ListPreference listPreference;
+    ListPreference countryListPreference;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -38,27 +40,27 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        listPreference = (ListPreference) findPreference(getString(R.string.country_list_preference_key));
-        listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        countryListPreference = (ListPreference) findPreference(getString(R.string.country_list_preference_key));
+        countryListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                int index = listPreference.findIndexOfValue(newValue.toString());
-                Log.d(TAG, "" + listPreference.getEntryValues()[index]);
+                int index = countryListPreference.findIndexOfValue(newValue.toString());
+                Log.d(TAG, "Country + " + countryListPreference.getEntryValues()[index]);
+                Preferences.putString(Constant.NEWS_SOURCE_COUNTRY, countryListPreference.getEntryValues()[index].toString());
                 return true;
             }
         });
-
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Preference preference = findPreference(key);
-        if (preference instanceof ListPreference) {
-            listPreference = (ListPreference) preference;
-            final int prefIndex = listPreference.findIndexOfValue(sharedPreferences.getString(key, ""));
-            if (prefIndex >= 0) {
-                listPreference.setValueIndex(prefIndex);
-                preference.setSummary(listPreference.getEntries()[prefIndex]);
-            }
+        if(key.equals(getString(R.string.country_list_preference_key))) {
+                countryListPreference = (ListPreference) preference;
+                final int prefIndex = countryListPreference.findIndexOfValue(sharedPreferences.getString(key, ""));
+                if (prefIndex >= 0) {
+                    countryListPreference.setValueIndex(prefIndex);
+                    preference.setSummary(countryListPreference.getEntries()[prefIndex]);
+                }
         }
     }
 
@@ -69,4 +71,5 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         getPreferenceScreen().getSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
+
 }

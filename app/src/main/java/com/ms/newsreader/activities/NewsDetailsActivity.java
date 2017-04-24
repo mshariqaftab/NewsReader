@@ -15,9 +15,10 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.ms.newsreader.R;
+import com.ms.newsreader.util.Constant;
 
 public class NewsDetailsActivity extends AppCompatActivity implements
-ShareActionProvider.OnShareTargetSelectedListener{
+        ShareActionProvider.OnShareTargetSelectedListener{
 
     private Intent shareIntent=new Intent(Intent.ACTION_SEND);
 
@@ -40,7 +41,7 @@ ShareActionProvider.OnShareTargetSelectedListener{
         webView.getSettings().setBuiltInZoomControls(true);
 
         if (bundle != null) {
-            URL = bundle.getString("BASE_URL");
+            URL = bundle.getString(Constant.NEWS_FEED);
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -85,7 +86,6 @@ ShareActionProvider.OnShareTargetSelectedListener{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_share:
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

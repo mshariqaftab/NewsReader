@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-    <android.support.v7.preference.ListPreference
-        android:key="@string/country_list_preference_key"
-        android:title="@string/title_list_preference"
-        android:summary = "@string/default_language"
-        android:entries="@array/country_array"
-        android:entryValues="@array/locale_key_array"
-        android:defaultValue= "en"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory android:title="@string/title_country_preference">
+        <android.support.v7.preference.ListPreference
+            android:defaultValue="in"
+            android:entries="@array/country_array"
+            android:entryValues="@array/country_key_array"
+            android:key="@string/country_list_preference_key"
+            android:summary="@string/default_country" />
+    </PreferenceCategory>
 </android.support.v7.preference.PreferenceScreen>

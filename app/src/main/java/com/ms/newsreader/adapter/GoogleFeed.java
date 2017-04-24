@@ -1,10 +1,12 @@
 package com.ms.newsreader.adapter;
 
-public class GoogleFeed {
+import java.io.Serializable;
+
+public class GoogleFeed implements Serializable {
     private String newsCategory;
     private String newsTitle;
     private String link;
-    private String description;
+    private String newsImage;
     private String publishDate;
 
     public String getNewsCategory() {
@@ -31,12 +33,12 @@ public class GoogleFeed {
         this.link = link;
     }
 
-    public String getDescription() {
-        return description;
+    public String getNewsImage() {
+        return newsImage;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setNewsImage(String newsImage) {
+        this.newsImage = newsImage;
     }
 
     public String getPublishDate() {

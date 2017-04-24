@@ -22,6 +22,7 @@ import com.ms.newsreader.adapter.GoogleFeed;
 import com.ms.newsreader.adapter.NewsFeedAdapter;
 import com.ms.newsreader.util.Constant;
 import com.ms.newsreader.util.GoogleNewsXmlParser;
+import com.ms.newsreader.util.Preferences;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -52,7 +53,7 @@ public class NewsFragment extends Fragment {
     public static NewsFragment newInstance(String language) {
         NewsFragment newsFragment = new NewsFragment();
         Bundle args = new Bundle();
-        args.putString(Constant.FEED_TYPE_KEY, language);
+        args.putString(Constant.FEED_TOPIC_KEY, language);
         newsFragment.setArguments(args);
         return newsFragment;
     }
@@ -81,17 +82,18 @@ public class NewsFragment extends Fragment {
             // The specified network connection is not available. Displays error message in webview.
             errorMsgWebView = (WebView) rootView.findViewById(R.id.webview);
             errorMsgWebView.setVisibility(View.GONE);
-            String type = getArguments().getString(Constant.FEED_TYPE_KEY, "");
+            String newsTopic = getArguments().getString(Constant.FEED_TOPIC_KEY, Constant.NEWS_FEED_TOP_STORIES);
 
             // load data
-            loadPage(type);
+            loadPage(newsTopic);
         }
         return rootView;
     }
 
     private void fetchGoogleNewsFeed(String newsTopic) {
         final GoogleNewsXmlParser googleNewsXmlParser = new GoogleNewsXmlParser();
-        URL newsRequestURL = Constant.buildUrlWithTopic(newsTopic);
+        String newsSourceCountry = Preferences.getString(Constant.NEWS_SOURCE_COUNTRY, "");
+        URL newsRequestURL = Constant.buildUrlWithTopic(newsTopic, newsSourceCountry);
         AndroidNetworking.get(newsRequestURL.toString())
                 .setPriority(Priority.LOW)
                 .build()
@@ -131,13 +133,13 @@ public class NewsFragment extends Fragment {
     /**
      * Method to load RSS feeds on success else
      * show error
-     * @param newsType String news feed type
+     * @param newsTopic String news feed type
      */
-    private void loadPage(String newsType) {
+    private void loadPage(String newsTopic) {
         if (((Constant.NETWORK_PREFERENCE.equals(ANY)) && (Constant.WIFI_CONNECTED || Constant.MOBILE_CONNECTED))
                 || ((Constant.NETWORK_PREFERENCE.equals(WIFI)) && (Constant.WIFI_CONNECTED))) {
             // call to load google news feed
-            fetchGoogleNewsFeed(newsType);
+            fetchGoogleNewsFeed(newsTopic);
 
             // close navigation drawer
             loading.setVisibility(View.VISIBLE);

@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         Timber.tag(MainActivity.class.getSimpleName());
         Timber.d("Activity Created");
     }
