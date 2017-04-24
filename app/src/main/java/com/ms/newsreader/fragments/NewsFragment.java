@@ -93,8 +93,7 @@ public class NewsFragment extends Fragment {
     private void fetchGoogleNewsFeed(String newsTopic) {
         final GoogleNewsXmlParser googleNewsXmlParser = new GoogleNewsXmlParser();
         String newsSourceCountry = Preferences.getString(Constant.NEWS_SOURCE_COUNTRY, "");
-        String newsLanguage = Preferences.getString(Constant.NEWS_SOURCE_LANGUAGE, "");
-        URL newsRequestURL = Constant.buildUrlWithTopic(newsTopic, newsSourceCountry, newsLanguage);
+        URL newsRequestURL = Constant.buildUrlWithTopic(newsTopic, newsSourceCountry);
         AndroidNetworking.get(newsRequestURL.toString())
                 .setPriority(Priority.LOW)
                 .build()

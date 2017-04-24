@@ -11,12 +11,4 @@
             android:key="@string/country_list_preference_key"
             android:summary="@string/default_country" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/title_language_preference">
-        <android.support.v7.preference.ListPreference
-            android:defaultValue="en"
-            android:entries="@array/language_array"
-            android:entryValues="@array/language_key_array"
-            android:key="@string/language_list_preference_key"
-            android:summary="@string/default_language" />
-    </PreferenceCategory>
 </android.support.v7.preference.PreferenceScreen>

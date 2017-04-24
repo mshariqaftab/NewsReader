@@ -11,21 +11,21 @@ import java.net.URL;
  */
 
 public class Constant {
-    public static final String BASE_URL = "https://news.google.com/news";  // Google feed BASE_URL
+    public static final String BASE_URL = "https://news.google.com/news/feeds";  // Google feed BASE_URL
     public static final String ADS_ID = "118F106CA47E3799F5997AFCAFADEFCF"; // valid only for debugging, Remove it while releasing the app
 
     // Type of news feeds
+    public static final String NEWS_FEED = "news_feed";
+
+
     private static final String output_type = "rss";
 
     /* Number of google news to be displayed by default */
     // TODO: Need to make it dynamic
-    private static final int numberOfNews = 20;
+    private static final int numberOfNews = 30;
 
     /* The country parameter allows us to get country news */
     private static final String COUNTRY_PARAM = "ned";
-
-    /* The language parameter allows us to get news in different language */
-    private static final String LANGUAGE_PARAM = "hl";
 
     /* The topic parameter allows us to get news of different topics */
     private static final String TOPIC_PARAM = "topic";
@@ -38,7 +38,6 @@ public class Constant {
 
     /* News preferences key */
     public static final String NEWS_SOURCE_COUNTRY = "country";
-    public static final String NEWS_SOURCE_LANGUAGE = "language";
 
     /* Types of news we want our API to return */
     public static final String NEWS_FEED_TECHNOLOGY = "tc";
@@ -77,12 +76,11 @@ public class Constant {
     // The user's current network preference setting.
     public static String NETWORK_PREFERENCE = null;
 
-    public static URL buildUrlWithTopic(String newsTopic, String newsSourceCountry, String newsLanguage) {
+    public static URL buildUrlWithTopic(String newsTopic, String newsSourceCountry) {
         Uri newsQueryUri = Uri.parse(BASE_URL).buildUpon()
                 .appendQueryParameter(OUTPUT_PARAM, output_type)
                 .appendQueryParameter(NUMBER_PARAM, Integer.toString(numberOfNews))
                 .appendQueryParameter(COUNTRY_PARAM, newsSourceCountry)
-                .appendQueryParameter(LANGUAGE_PARAM, newsLanguage)
                 .appendQueryParameter(TOPIC_PARAM, newsTopic)
                 .build();
         try {

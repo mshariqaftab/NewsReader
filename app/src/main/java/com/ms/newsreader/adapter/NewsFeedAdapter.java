@@ -3,7 +3,6 @@ package com.ms.newsreader.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import com.ms.newsreader.R;
 import com.ms.newsreader.activities.NewsDetailsActivity;
+import com.ms.newsreader.util.Constant;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -44,8 +44,9 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
         return new ViewHolder(view, new ViewHolder.NewsFeedViewHolderClicks() {
             @Override
             public void onFeedRowClick(View caller, int position) {
+                final GoogleFeed googleFeed = newsFeedList.get(position);
                 Intent intent = new Intent(mContext, NewsDetailsActivity.class);
-                intent.putExtra("BASE_URL", newsFeedList.get(position).getLink());
+                intent.putExtra(Constant.NEWS_FEED,googleFeed.getLink());
                 mContext.startActivity(intent);
             }
         });
@@ -56,7 +57,7 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
         final GoogleFeed googleFeed = newsFeedList.get(position);
         holder.title.setText(googleFeed.getNewsTitle());
         holder.pubDate.setText(googleFeed.getPublishDate());
-        Picasso.with(mContext).load(googleFeed.getDescription()).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.newsImage);
+        Picasso.with(mContext).load(googleFeed.getNewsImage()).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.newsImage);
     }
 
     @Override

@@ -76,7 +76,7 @@ public class GoogleNewsXmlParser {
                 googleFeed.setNewsTitle(title);
                 googleFeed.setPublishDate(publishDate);
                 googleFeed.setLink(link);
-                googleFeed.setDescription(description);
+                googleFeed.setNewsImage(description);
                 items.add(googleFeed);
                 category = null;
                 title = null;

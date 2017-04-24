@@ -20,14 +20,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private static final String TAG = SettingsFragment.class.getSimpleName();
     SharedPreferences sharedPreferences;
     ListPreference countryListPreference;
-    ListPreference languageListPreference;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.country_preferences);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         onSharedPreferenceChanged(sharedPreferences, getString(R.string.country_list_preference_key));
-        onSharedPreferenceChanged(sharedPreferences, getString(R.string.language_list_preference_key));
     }
 
 
@@ -43,7 +41,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         countryListPreference = (ListPreference) findPreference(getString(R.string.country_list_preference_key));
-        languageListPreference = (ListPreference) findPreference(getString(R.string.language_list_preference_key));
         countryListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 int index = countryListPreference.findIndexOfValue(newValue.toString());
@@ -52,18 +49,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 return true;
             }
         });
-
-        languageListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                int index = languageListPreference.findIndexOfValue(newValue.toString());
-                Log.d(TAG, "Language + " + languageListPreference.getEntryValues()[index]);
-                Preferences.putString(Constant.NEWS_SOURCE_LANGUAGE, languageListPreference.getEntryValues()[index].toString());
-
-                return true;
-            }
-        });
-
     }
 
     @Override
@@ -76,15 +61,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                     countryListPreference.setValueIndex(prefIndex);
                     preference.setSummary(countryListPreference.getEntries()[prefIndex]);
                 }
-        }
-
-        if(key.equals(getString(R.string.language_list_preference_key))) {
-            languageListPreference = (ListPreference) preference;
-            final int prefIndex = languageListPreference.findIndexOfValue(sharedPreferences.getString(key, ""));
-            if (prefIndex >= 0) {
-                languageListPreference.setValueIndex(prefIndex);
-                preference.setSummary(languageListPreference.getEntries()[prefIndex]);
-            }
         }
     }
 
