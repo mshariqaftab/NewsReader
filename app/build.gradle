@@ -7,7 +7,7 @@ android {
         applicationId "com.ms.newsreader"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 3
+        versionCode 4
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -36,9 +36,9 @@ dependencies {
         transitive = true
     }
 
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support:support-v4:25.3.0'
-    compile 'com.android.support:design:25.3.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     compile 'com.amitshekhar.android:jackson-android-networking:0.2.0'
     compile 'com.google.android.gms:play-services-ads:10.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
@@ -46,7 +46,7 @@ dependencies {
     compile 'com.mikepenz:iconics-core:2.8.2@aar'
     compile 'com.mikepenz:fontawesome-typeface:4.7.0.0@aar'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
-    compile 'com.android.support:preference-v7:25.3.0'
+    compile 'com.android.support:preference-v7:25.3.1'
     compile 'com.google.firebase:firebase-crash:10.0.1'
     testCompile 'junit:junit:4.12'
 }
